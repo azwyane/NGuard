@@ -1,0 +1,11 @@
+config.txt
+*.pyc
+*~
+/.vscode
+__pycache__
+venv
+db.sqlite3
+media
+.DS_Store
+.dockerignore
+
