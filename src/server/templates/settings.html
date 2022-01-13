@@ -1,0 +1,144 @@
+	
+
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+
+
+
+
+        
+<div class="pt-6  max-w-5xl  px-4">
+  <h2 class="pt-4 pl-8 text-2xl leading-none font-bold text-gray-900 mb-10">Settings</h2>
+  <form id="setting-form">
+     <div class="bg-white  rounded-lg my-2 p-4 sm:p-6 xl:p-8 ">
+        <div class="block w-full overflow-x-auto">
+          <h3 class="pb-2 text-xl leading-none border-b font-semibold text-gray-900 mb-10">System</h3>
+         
+            <div class="  whitespace-nowrap divide-y  flex items-between justify-center">
+               <label for="country" class="block text-sm md:text-base font-medium flex-1 text-gray-800">
+                   NGuard working mode</label>
+               <select id="country" name="country" autocomplete="country"
+                   class="mt-1 block w-28 py-1 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                   <option>IPS</option>
+                   <option>IDS</option>
+               </select>
+           </div>
+   
+        </div>
+     </div>
+     <div class="bg-white  rounded-lg my-2 p-4 sm:p-6 xl:p-8 ">
+      <div class="block w-full overflow-x-auto">
+        
+        <h3 class="pb-2 text-xl leading-none border-b font-semibold text-gray-900 mb-10">Alert and notifications</h3>
+        <div class="flex-col space-y-2 divide-y divide-dashed">
+        <div class="  flex items-between justify-center py-2">
+         <label for="country" class="block text-sm md:text-base font-medium flex-1 text-gray-800">
+             Desktop Notification for alerts, info and error </label>
+         <select id="country" name="country" autocomplete="country"
+             class="mt-1 block w-28 py-1 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+             <option>enable</option>
+             <option>disable</option>
+         </select>
+     </div>            <div class="  whitespace-nowrap py-2 flex items-between justify-center">
+      <label for="country" class="block text-sm py-1 md:text-base font-medium flex-1 text-gray-800">
+         Send alerts, info and error as email
+          </label>
+      <select id="country" name="country" autocomplete="country"
+          class="mt-1 block w-28 py-1 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+          <option>enable</option>
+          <option>disable</option>
+      </select>
+  </div>     
+  <div>  
+       <div class="  whitespace-nowrap py-2 flex items-between justify-center">
+   <label for="country" class="block text-sm md:text-base font-medium flex-1 text-gray-800">
+       Email lists</label>
+       <select id="country" name="country" autocomplete="country"
+       class="mt-1 block w-28 py-1 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+       <option>enable</option>
+       <option>disable</option>
+   </select>
+</div>
+       <div class="grid grid-cols-3 py-2 grid-flow-row gap-4">
+        
+       </div>
+     
+   
+</div>
+
+
+
+
+
+      </div>
+   </div>
+</form>
+  </div>
+
+
+
+
+
+
+
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--     
+    <script type="text/javascript">
+		console.log("hello")
+    function submitform(event){
+		event.preventDefault();
+        alert("Sending Json");
+        var form =document.getElementById("settings");
+        var formData = JSON.stringify($("#settings").serializeArray());
+        console.log(formData)
+      
+	}
+	
+ </script> -->
+    
+
+
+

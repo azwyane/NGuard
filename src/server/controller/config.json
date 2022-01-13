@@ -1,0 +1,10 @@
+ {
+
+ "system":{
+   "NGUARD_MODE": "IPS"
+ },
+ "notification":{
+ "NOTIFICATION_EMAIL": "enable",
+ "NOTIFICATION_DESKTOP": "enable",
+ "NOTIFICATION_EMAIL-LIST": []
+ }}

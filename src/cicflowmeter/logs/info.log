@@ -1,0 +1,5 @@
+2022-01-13 00:02:16 - wlp2s0
+2022-01-13 00:02:16 - open wlp2s0 fail -> wlp2s0: You don't have permission to capture on that device (socket: Operation not permitted)
+2022-01-13 00:02:16 - open wlp2s0 fail ->wlp2s0: You don't have permission to capture on that device (socket: Operation not permitted)
+2022-01-13 00:02:30 - wlp2s0
+2022-01-13 00:02:30 - Pcap is listening...

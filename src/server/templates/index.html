@@ -1,0 +1,168 @@
+
+{% extends 'base.html' %}
+
+{% block content %}
+          <div>
+            <div class="flex items-center justify-end">
+             <div class="hidden lg:flex items-center justify-center">
+              <span class="rounded-full h-2 w-2 bg-green-400 "></span>
+               <span class="ml-2 text-base font-normal text-gray-500 mr-5">network active</span>
+            </div>
+            
+               <div class="hidden lg:flex items-center">
+                  <span class="text-base font-normal text-gray-500 mr-5"><script>document.write(new Date().toLocaleDateString()+"&nbsp;&nbsp;&nbsp;"+new Date().toLocaleTimeString())</script></span>
+               </div>
+             </div>
+        
+        
+             <div class="pt-6   px-4">
+                <div class="w-full grid pb-4 grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-4">
+                   <div class="bg-white rounded-lg p-4 sm:p-6 xl:p-8  2xl:col-span-2">
+                    <div id="chart"></div>
+                   </div>
+                   <div class="bg-white rounded-lg p-4 sm:p-6 xl:p-8 ">
+                      <div class="mb-4 flex items-center justify-between">
+                         <div>
+                            <h3 class="text-xl font-semibold text-gray-900 mb-2">Recent Alerts</h3>
+                            
+                         </div>
+                         <div class="flex-shrink-0">
+                            <a href="#" class="text-sm font-medium text-cyan-600 hover:bg-gray-100 rounded-lg p-2">View all</a>
+                         </div>
+                      </div>
+                      <div class="flex flex-col mt-8">
+                         <div class="overflow-x-auto rounded-lg">
+                            <div class="align-middle inline-block min-w-full">
+                               <div class="shadow overflow-hidden sm:rounded-lg">
+                                  
+                               </div>
+                            </div>
+                         </div>
+                      </div>
+                   </div>
+                </div>
+              
+                  
+                   <div class="bg-white  rounded-lg  p-4 sm:p-6 xl:p-8 ">
+                      <h3 class="text-xl leading-none font-bold text-gray-900 mb-10">Recent Packets</h3>
+                      <div class="block w-full overflow-x-auto">
+                         <table class="items-center w-full bg-transparent border-collapse">
+                            <thead>
+                               <tr>
+                                  <th class="px-4 bg-gray-50 text-gray-700 align-middle py-3 text-xs font-semibold text-left uppercase border-l-0 border-r-0 whitespace-nowrap">
+                                     Src IP
+                                  </th>
+                                  <th class="px-4 bg-gray-50 text-gray-700 align-middle py-3 text-xs font-semibold text-left uppercase border-l-0 border-r-0 whitespace-nowrap">Src Port </th>
+                                  <th class="px-4 bg-gray-50 text-gray-700 align-middle py-3 text-xs font-semibold text-left uppercase border-l-0 border-r-0 whitespace-nowrap min-w-140-px">Dst IP</th>
+                                  <th class="px-4 bg-gray-50 text-gray-700 align-middle py-3 text-xs font-semibold text-left uppercase border-l-0 border-r-0 whitespace-nowrap min-w-140-px">Dst Port</th>
+                                  <th class="px-4 bg-gray-50 text-gray-700 align-middle py-3 text-xs font-semibold text-left uppercase border-l-0 border-r-0 whitespace-nowrap min-w-140-px">Protocol</th>
+                                  <th class="px-4 bg-gray-50 text-gray-700 align-middle py-3 text-xs font-semibold text-left uppercase border-l-0 border-r-0 whitespace-nowrap min-w-140-px">Timestamp</th>
+                               </tr>
+                            </thead>
+                            <tbody id="packet-table-body" class="divide-y divide-gray-100">
+                            </tbody>
+                         </table>
+                      </div>
+                   </div>
+                </div>
+             </div>
+        
+        <!--suppress JSUnresolvedLibraryURL -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+        <!--suppress JSUnresolvedLibraryURL -->
+        <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+        
+        <script>
+            $(document).ready(function () {
+               var normalCount=[]
+               var anomaluscount= []
+               var timestamp = []
+        
+            var options = {
+                  series: [    ],
+                  chart: {
+                  height: 350,
+                  type: 'area'
+                },
+                dataLabels: {
+                  enabled: false
+                },
+                stroke: {
+                  curve: 'smooth'
+                },
+                xaxis: {
+                  type: 'string',
+                  categories: ["2018-09-19T00:00:00.000Z", "2018-09-19T01:30:00.000Z", "2018-09-19T02:30:00.000Z", "2018-09-19T03:30:00.000Z", "2018-09-19T04:30:00.000Z", "2018-09-19T05:30:00.000Z", "2018-09-19T06:30:00.000Z"]
+                },
+                tooltip: {
+                  x: {
+                    
+                  },
+                },
+                };
+        
+                var chart = new ApexCharts(document.querySelector("#chart"), options);
+                chart.render();
+                var header=['Src IP', 'Src Port', 'Dst IP', 'Dst Port', 'Protocol', 'Timestamp']
+
+
+
+                const source = new EventSource("/packets/stream");
+                source.onmessage = function (event) {
+                   $("#packet-table-body").empty();
+                    const data = JSON.parse(event.data);
+                  
+                  JSON.parse(data.packets).map((packet)=>{
+
+                     $("#packet-table-body").append(`
+                     <tr class="text-gray-500">
+                                ${header.map(item=>(` <td class="border-t-0 px-4 align-middle text-sm font-normal whitespace-nowrap p-4 text-left">${packet[item]}</td>`))}
+                                 
+                               
+                               </tr>
+
+                     
+                     `)
+               })
+                  if(data.counts){
+                     
+                     normalCount.push(data.counts[0]["count"])
+                     timestamp.push(data.counts[0]["time"])
+                     if(normalCount.length>=6)
+                     {
+                        timestamp.shift()
+                        normalCount.shift()
+                     }
+
+                     chart.updateOptions({series:[{
+                  name: 'normal packet',
+                  data: normalCount
+                }, {
+                  name: 'Anomalus packet',
+                  data: anomaluscount
+                }],xaxis:{
+                   type:'datetime',
+                   categories:timestamp
+                }})
+               
+               
+                  }
+                
+             
+                }
+
+
+
+
+            });
+        </script>
+
+
+
+
+{% endblock%}
+
+
+
+
+
