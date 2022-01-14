@@ -701,3 +701,79 @@
 2022-01-13 07:05:04 DEBUG cic.cs.unb.ca.jnetpcap.FlowGenerator    FlagFIN current has 1135 flow
 2022-01-13 07:05:04 DEBUG cic.cs.unb.ca.jnetpcap.FlowGenerator    FlagFIN current has 1135 flow
 2022-01-13 07:05:04 DEBUG cic.cs.unb.ca.jnetpcap.FlowGenerator    FlagFIN current has 1134 flow
+2022-01-14 09:57:50 INFO  cic.cs.unb.ca.jnetpcap.FlowGenerator    wlan0
+2022-01-14 09:57:50 INFO  cic.cs.unb.ca.jnetpcap.worker.TrafficFlowWorker    open wlan0 fail -> wlan0: You don't have permission to capture on that device (socket: Operation not permitted)
+2022-01-14 09:57:50 INFO  cic.cs.unb.ca.jnetpcap.FlowGenerator    open wlan0 fail ->wlan0: You don't have permission to capture on that device (socket: Operation not permitted)
+2022-01-14 09:58:19 INFO  cic.cs.unb.ca.jnetpcap.FlowGenerator    wlan0
+2022-01-14 09:58:19 INFO  cic.cs.unb.ca.jnetpcap.worker.TrafficFlowWorker    open wlan0 fail -> wlan0: You don't have permission to capture on that device (socket: Operation not permitted)
+2022-01-14 09:58:19 INFO  cic.cs.unb.ca.jnetpcap.FlowGenerator    open wlan0 fail ->wlan0: You don't have permission to capture on that device (socket: Operation not permitted)
+2022-01-14 09:58:49 INFO  cic.cs.unb.ca.jnetpcap.FlowGenerator    wlan0
+2022-01-14 09:58:50 INFO  cic.cs.unb.ca.jnetpcap.worker.TrafficFlowWorker    Pcap is listening...
+2022-01-14 09:59:20 DEBUG cic.cs.unb.ca.jnetpcap.FlowGenerator    FlagFIN current has 6 flow
+2022-01-14 09:59:20 DEBUG cic.cs.unb.ca.jnetpcap.FlowGenerator    FlagFIN current has 6 flow
+2022-01-14 09:59:20 DEBUG cic.cs.unb.ca.jnetpcap.FlowGenerator    FlagFIN current has 19 flow
+2022-01-14 09:59:20 DEBUG cic.cs.unb.ca.jnetpcap.FlowGenerator    FlagFIN current has 19 flow
+2022-01-14 09:59:20 DEBUG cic.cs.unb.ca.jnetpcap.FlowGenerator    FlagFIN current has 18 flow
+2022-01-14 09:59:46 DEBUG cic.cs.unb.ca.jnetpcap.FlowGenerator    FlagFIN current has 32 flow
+2022-01-14 09:59:46 DEBUG cic.cs.unb.ca.jnetpcap.FlowGenerator    FlagFIN current has 32 flow
+2022-01-14 10:00:40 DEBUG cic.cs.unb.ca.jnetpcap.FlowGenerator    FlagFIN current has 39 flow
+2022-01-14 10:00:40 DEBUG cic.cs.unb.ca.jnetpcap.FlowGenerator    FlagFIN current has 39 flow
+2022-01-14 10:00:40 DEBUG cic.cs.unb.ca.jnetpcap.FlowGenerator    FlagFIN current has 39 flow
+2022-01-14 10:00:40 DEBUG cic.cs.unb.ca.jnetpcap.FlowGenerator    FlagFIN current has 40 flow
+2022-01-14 10:01:33 DEBUG cic.cs.unb.ca.jnetpcap.FlowGenerator    FlagFIN current has 56 flow
+2022-01-14 10:01:33 DEBUG cic.cs.unb.ca.jnetpcap.FlowGenerator    FlagFIN current has 56 flow
+2022-01-14 10:01:33 DEBUG cic.cs.unb.ca.jnetpcap.FlowGenerator    FlagFIN current has 55 flow
+2022-01-14 10:01:33 DEBUG cic.cs.unb.ca.jnetpcap.FlowGenerator    FlagFIN current has 55 flow
+2022-01-14 10:01:33 DEBUG cic.cs.unb.ca.jnetpcap.FlowGenerator    FlagFIN current has 57 flow
+2022-01-14 10:01:33 DEBUG cic.cs.unb.ca.jnetpcap.FlowGenerator    FlagFIN current has 58 flow
+2022-01-14 10:01:33 DEBUG cic.cs.unb.ca.jnetpcap.FlowGenerator    FlagFIN current has 62 flow
+2022-01-14 10:01:33 DEBUG cic.cs.unb.ca.jnetpcap.FlowGenerator    FlagFIN current has 62 flow
+2022-01-14 10:01:33 DEBUG cic.cs.unb.ca.jnetpcap.FlowGenerator    FlagFIN current has 62 flow
+2022-01-14 10:01:33 DEBUG cic.cs.unb.ca.jnetpcap.FlowGenerator    FlagFIN current has 62 flow
+2022-01-14 10:02:35 DEBUG cic.cs.unb.ca.jnetpcap.FlowGenerator    FlagFIN current has 62 flow
+2022-01-14 10:02:35 DEBUG cic.cs.unb.ca.jnetpcap.FlowGenerator    FlagFIN current has 61 flow
+2022-01-14 10:02:35 DEBUG cic.cs.unb.ca.jnetpcap.FlowGenerator    FlagFIN current has 60 flow
+2022-01-14 10:02:35 DEBUG cic.cs.unb.ca.jnetpcap.FlowGenerator    FlagFIN current has 61 flow
+2022-01-14 10:02:35 DEBUG cic.cs.unb.ca.jnetpcap.FlowGenerator    FlagFIN current has 61 flow
+2022-01-14 10:02:35 DEBUG cic.cs.unb.ca.jnetpcap.FlowGenerator    FlagFIN current has 62 flow
+2022-01-14 10:02:35 DEBUG cic.cs.unb.ca.jnetpcap.FlowGenerator    FlagFIN current has 62 flow
+2022-01-14 10:02:35 DEBUG cic.cs.unb.ca.jnetpcap.FlowGenerator    FlagFIN current has 63 flow
+2022-01-14 10:02:35 DEBUG cic.cs.unb.ca.jnetpcap.FlowGenerator    FlagFIN current has 62 flow
+2022-01-14 10:03:37 DEBUG cic.cs.unb.ca.jnetpcap.FlowGenerator    FlagFIN current has 63 flow
+2022-01-14 10:03:37 DEBUG cic.cs.unb.ca.jnetpcap.FlowGenerator    FlagFIN current has 63 flow
+2022-01-14 10:03:37 DEBUG cic.cs.unb.ca.jnetpcap.FlowGenerator    FlagFIN current has 62 flow
+2022-01-14 10:03:37 DEBUG cic.cs.unb.ca.jnetpcap.FlowGenerator    FlagFIN current has 62 flow
+2022-01-14 10:03:37 DEBUG cic.cs.unb.ca.jnetpcap.FlowGenerator    FlagFIN current has 63 flow
+2022-01-14 10:03:37 DEBUG cic.cs.unb.ca.jnetpcap.FlowGenerator    FlagFIN current has 63 flow
+2022-01-14 10:03:37 DEBUG cic.cs.unb.ca.jnetpcap.FlowGenerator    FlagFIN current has 62 flow
+2022-01-14 10:03:37 DEBUG cic.cs.unb.ca.jnetpcap.FlowGenerator    FlagFIN current has 65 flow
+2022-01-14 10:03:37 DEBUG cic.cs.unb.ca.jnetpcap.FlowGenerator    FlagFIN current has 65 flow
+2022-01-14 10:03:37 DEBUG cic.cs.unb.ca.jnetpcap.FlowGenerator    FlagFIN current has 66 flow
+2022-01-14 10:03:37 DEBUG cic.cs.unb.ca.jnetpcap.FlowGenerator    FlagFIN current has 66 flow
+2022-01-14 10:03:37 DEBUG cic.cs.unb.ca.jnetpcap.FlowGenerator    FlagFIN current has 66 flow
+2022-01-14 10:03:37 DEBUG cic.cs.unb.ca.jnetpcap.FlowGenerator    FlagFIN current has 66 flow
+2022-01-14 10:03:37 DEBUG cic.cs.unb.ca.jnetpcap.FlowGenerator    FlagFIN current has 66 flow
+2022-01-14 10:03:37 DEBUG cic.cs.unb.ca.jnetpcap.FlowGenerator    FlagFIN current has 66 flow
+2022-01-14 10:04:38 DEBUG cic.cs.unb.ca.jnetpcap.FlowGenerator    FlagFIN current has 77 flow
+2022-01-14 10:04:38 DEBUG cic.cs.unb.ca.jnetpcap.FlowGenerator    FlagFIN current has 77 flow
+2022-01-14 10:29:41 INFO  cic.cs.unb.ca.jnetpcap.FlowGenerator    wlan0
+2022-01-14 10:29:41 INFO  cic.cs.unb.ca.jnetpcap.worker.TrafficFlowWorker    Pcap is listening...
+2022-01-14 10:32:00 INFO  cic.cs.unb.ca.jnetpcap.FlowGenerator    snoop
+2022-01-14 10:32:00 INFO  cic.cs.unb.ca.jnetpcap.worker.TrafficFlowWorker    open snoop fail -> snoop: You don't have permission to capture on that device (socket: Operation not permitted)
+2022-01-14 10:32:00 INFO  cic.cs.unb.ca.jnetpcap.FlowGenerator    open snoop fail ->snoop: You don't have permission to capture on that device (socket: Operation not permitted)
+2022-01-14 10:32:08 INFO  cic.cs.unb.ca.jnetpcap.FlowGenerator    snoop
+2022-01-14 10:32:09 INFO  cic.cs.unb.ca.jnetpcap.worker.TrafficFlowWorker    Pcap is listening...
+2022-01-14 10:32:26 DEBUG cic.cs.unb.ca.jnetpcap.FlowGenerator    FlagFIN current has 7 flow
+2022-01-14 10:32:39 DEBUG cic.cs.unb.ca.jnetpcap.FlowGenerator    FlagFIN current has 16 flow
+2022-01-14 10:32:39 DEBUG cic.cs.unb.ca.jnetpcap.FlowGenerator    FlagFIN current has 16 flow
+2022-01-14 10:32:43 DEBUG cic.cs.unb.ca.jnetpcap.FlowGenerator    FlagFIN current has 18 flow
+2022-01-14 10:32:47 DEBUG cic.cs.unb.ca.jnetpcap.FlowGenerator    FlagFIN current has 18 flow
+2022-01-14 10:32:54 DEBUG cic.cs.unb.ca.jnetpcap.FlowGenerator    FlagFIN current has 23 flow
+2022-01-14 10:32:54 DEBUG cic.cs.unb.ca.jnetpcap.FlowGenerator    FlagFIN current has 23 flow
+2022-01-14 10:33:55 DEBUG cic.cs.unb.ca.jnetpcap.FlowGenerator    FlagFIN current has 25 flow
+2022-01-14 10:33:55 DEBUG cic.cs.unb.ca.jnetpcap.FlowGenerator    FlagFIN current has 30 flow
+2022-01-14 10:33:55 DEBUG cic.cs.unb.ca.jnetpcap.FlowGenerator    FlagFIN current has 30 flow
+2022-01-14 10:33:55 DEBUG cic.cs.unb.ca.jnetpcap.FlowGenerator    FlagFIN current has 31 flow
+2022-01-14 10:33:55 DEBUG cic.cs.unb.ca.jnetpcap.FlowGenerator    FlagFIN current has 32 flow
+2022-01-14 10:34:57 DEBUG cic.cs.unb.ca.jnetpcap.FlowGenerator    FlagFIN current has 32 flow
+2022-01-14 10:34:57 DEBUG cic.cs.unb.ca.jnetpcap.FlowGenerator    FlagFIN current has 32 flow

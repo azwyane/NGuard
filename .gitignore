@@ -4,8 +4,10 @@ config.txt
 /.vscode
 __pycache__
 venv
+.venv
 db.sqlite3
 media
 .DS_Store
 .dockerignore
-
+src/cicflowmeter/data/*
+src/brain/models/*

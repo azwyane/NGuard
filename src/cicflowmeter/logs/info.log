@@ -3,3 +3,18 @@
 2022-01-13 00:02:16 - open wlp2s0 fail ->wlp2s0: You don't have permission to capture on that device (socket: Operation not permitted)
 2022-01-13 00:02:30 - wlp2s0
 2022-01-13 00:02:30 - Pcap is listening...
+2022-01-14 09:57:50 - wlan0
+2022-01-14 09:57:50 - open wlan0 fail -> wlan0: You don't have permission to capture on that device (socket: Operation not permitted)
+2022-01-14 09:57:50 - open wlan0 fail ->wlan0: You don't have permission to capture on that device (socket: Operation not permitted)
+2022-01-14 09:58:19 - wlan0
+2022-01-14 09:58:19 - open wlan0 fail -> wlan0: You don't have permission to capture on that device (socket: Operation not permitted)
+2022-01-14 09:58:19 - open wlan0 fail ->wlan0: You don't have permission to capture on that device (socket: Operation not permitted)
+2022-01-14 09:58:49 - wlan0
+2022-01-14 09:58:50 - Pcap is listening...
+2022-01-14 10:29:41 - wlan0
+2022-01-14 10:29:41 - Pcap is listening...
+2022-01-14 10:32:00 - snoop
+2022-01-14 10:32:00 - open snoop fail -> snoop: You don't have permission to capture on that device (socket: Operation not permitted)
+2022-01-14 10:32:00 - open snoop fail ->snoop: You don't have permission to capture on that device (socket: Operation not permitted)
+2022-01-14 10:32:08 - snoop
+2022-01-14 10:32:09 - Pcap is listening...
