@@ -11,3 +11,4 @@ media
 .dockerignore
 src/cicflowmeter/data/*
 src/brain/models/*
+src/*.csv

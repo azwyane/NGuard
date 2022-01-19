@@ -35,5 +35,6 @@ def notify_desktop(title,message):
     
 
 
-if __name__=="__main__":
+if __name__== "__main__":
+    pass
 
