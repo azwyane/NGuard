@@ -3,7 +3,7 @@ import hashlib
 import pandas as pd
 import numpy as np
 import pathlib
-
+from . import executor 
 
 PROJECT_PATH = '.'
 EXCLUDE = []
@@ -45,16 +45,18 @@ def block(sip, sport, dip, dport,proto,iface=DEFAULT_IFACE):
             csv_write_append(pathoffile=PROJECT_PATH+'/blocked.csv',sip=sip, sport = sport, 
                 dip = dip,dport = dport,proto = proto,
                 iface=DEFAULT_IFACE,hash_val=hash_val)
-        
+            executor.blocker(sip, sport, dip, dport,proto,iface=DEFAULT_IFACE)
     else:
         csv_write_append(pathoffile=PROJECT_PATH+'/blocked.csv',sip=sip, sport = sport, 
                     dip = dip,dport = dport,proto = proto,
                     iface=DEFAULT_IFACE,hash_val=hash_val)
+        executor.blocker(sip, sport, dip, dport,proto,iface=DEFAULT_IFACE)
 
  
-def ubock(sip, sport, dip, dport,proto,iface=DEFAULT_IFACE):
+def unbock(sip, sport, dip, dport,proto,iface=DEFAULT_IFACE):
     hash_val = hashlib.md5((str(sip)+str(sport)+str(dip)+str(dport)+str(proto)+str(iface)).encode('utf-8')).hexdigest()
     if pathlib.Path('./blocked.csv').is_file():
         df = pd.read_csv('./blocked.csv')
         if np.any(df['hash']==hash_val):
             df.drop(df[df['hash']==hash_val].index,copy=False)
+            executor.unblocker(sip, sport, dip, dport,proto,iface=DEFAULT_IFACE)
