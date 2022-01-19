@@ -51,12 +51,10 @@ def block(sip, sport, dip, dport,proto,iface=DEFAULT_IFACE):
                     dip = dip,dport = dport,proto = proto,
                     iface=DEFAULT_IFACE,hash_val=hash_val)
 
-
-       
-
-    
-
-
-def unbock():
-    pass
-
+ 
+def ubock(sip, sport, dip, dport,proto,iface=DEFAULT_IFACE):
+    hash_val = hashlib.md5((str(sip)+str(sport)+str(dip)+str(dport)+str(proto)+str(iface)).encode('utf-8')).hexdigest()
+    if pathlib.Path('./blocked.csv').is_file():
+        df = pd.read_csv('./blocked.csv')
+        if np.any(df['hash']==hash_val):
+            df.drop(df[df['hash']==hash_val].index,copy=False)
