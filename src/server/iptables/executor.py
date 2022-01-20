@@ -1,6 +1,7 @@
 import os
+import subprocess
 
-
+DEFAULT_IFACE = ''
 INTERNAL_NETWORK = "192.168.1"
 AVOID = "192.168.1.1" #gateway
 CHAINS = ['INPUT','OUTPUT','FORWARD']
@@ -25,6 +26,15 @@ def unblocker(sip, sport, dip, dport,proto,iface=DEFAULT_IFACE):
             os.popen(f"iptables -D {CHAINS[1]} -d {dip} -j DROP")
         else:
                 os.popen(f"iptables -D {CHAINS[0]} -d {sip} -j DROP")
+    else:
+        print("NEED ROOT PRIVILEGES")
+
+def get_applied_rules():
+    if os.getuid() == 0:
+        output,err = subprocess.Popen(["iptables","-S"],stdout=subprocess.PIPE).communicate()
+        if not err:
+            return output
+
     else:
         print("NEED ROOT PRIVILEGES")
 

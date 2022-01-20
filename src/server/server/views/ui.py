@@ -1,5 +1,6 @@
 from server import app
 from flask import render_template
+from iptables import iptb,executor
 
 @app.route('/')
 def index():
@@ -15,7 +16,9 @@ def settings():
 
 @app.route('/iptables')
 def  iptables():
-    return render_template("iptables.html",title="IP tables management",nav="iptables")
+    iptb_val = executor.get_applied_rules()
+    return render_template("iptables.html",title="IP tables management",
+                            nav="iptables",iptb_val=iptb_val.decode('utf-8'))
 
 
 @app.route('/alerts')
