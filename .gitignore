@@ -10,5 +10,6 @@ media
 .DS_Store
 .dockerignore
 src/cicflowmeter/data/*
+src/cicflowmeter/logs/*
 src/brain/models/*
 src/*.csv

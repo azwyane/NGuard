@@ -4,13 +4,25 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import f1_score
 from sklearn.metrics import confusion_matrix
-import pickle
 
 
-with open('./models/multi_rf_model','rb') as f:
-    multiclass_model = pickle.load(f)
+def cleanser(df):
+    pass
+
+def binaryclassifier(df,binaryclass_model):
+    # y_predicted = model.predict(df)
+    pass
+
+def multiclassclassifier(df,multiclass_model):
+    # y_predicted = model.predict(df)
+    pass
 
 
 
-y_predicted = model.predict(livedata)
+ 
 
+
+
+
+
+    
