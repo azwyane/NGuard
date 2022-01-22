@@ -13,3 +13,5 @@ src/cicflowmeter/data/*
 src/cicflowmeter/logs/*
 src/brain/models/*
 src/*.csv
+src/logs/debug
+src/logs/info.log

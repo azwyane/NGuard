@@ -3,11 +3,13 @@ import os
 from datetime import datetime
 import pandas as pd
 
+CWD =os.getcwd()
+FILE_PATH = CWD.replace('/server','') + '/cicflowmeter/data/daily/'
 
 def get_packet_stream(rows):
 
     dt = datetime.now()
-    filepath = "cicflowmeter/data/daily/" + dt.strftime("%Y-%m-%d") + "_Flow.csv"
+    filepath = FILE_PATH + dt.strftime("%Y-%m-%d") + "_Flow.csv"
 
     num_lines = sum(1 for line in open(filepath))
 
@@ -28,7 +30,7 @@ def get_packet_header():
 def get_packet_count(rows=1):
     dt = datetime.now()
     time="23:42:34"
-    filepath = "cicflowmeter/data/daily/" + dt.strftime("%Y-%m-%d") + "_count_Flow.csv"
+    filepath = FILE_PATH + dt.strftime("%Y-%m-%d") + "_count_Flow.csv"
     num_lines = sum(1 for line in open(filepath)) - rows
     csv_file = pd.DataFrame(pd.read_csv(filepath, sep=",", header=0, index_col=False,skiprows=range(1,num_lines)))
     packets = csv_file.to_json(orient="records", date_format="epoch", double_precision=10, force_ascii=True,

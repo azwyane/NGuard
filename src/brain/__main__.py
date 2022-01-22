@@ -20,9 +20,9 @@ while True:
     if file:=glob.glob(DATA_PATH+"/*Flow.csv"): #look for file 
         print("Found")
         df = pd.read_csv(file[0])
-        df = classifier.cleanser(df)
-        classifier.binaryclassifier(df,binaryclass_model)
-        classifier.multiclassclassifier(df,multiclass_model)
+        cleaned_df = classifier.cleanser(df)
+        classifier.binaryclassifier(cleaned_df,binaryclass_model)
+        classifier.multiclassclassifier(cleaned_df,multiclass_model)
     else:
         print("not found")
         sleep(5)
