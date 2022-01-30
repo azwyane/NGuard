@@ -6,18 +6,25 @@ import pathlib
 import os
 import hashlib
 from sklearn.preprocessing import LabelEncoder
-
+from sklearn.decomposition import PCA
+from sklearn.preprocessing import StandardScaler
+from joblib import dump,load
 
 CWD = os.getcwd()
 SAVE_TO = CWD + '/server'
-
+BSCALER = CWD +'/brain/models/bscaler.joblib'
+BPCA = CWD +'/brain/models/bpca.joblib'
 
 def bcleanser(s_read_index,df):
     bdf = df.copy()
-    bdf = bdf[['Bwd Pkt Len Min', 'Subflow Fwd Byts','TotLen Fwd Pkts','Fwd Pkt Len Mean']]
-    bdf = bdf.iloc[s_read_index:]
-    bdf = scale(np.nan_to_num(bdf.values))
-    return bdf
+    bdf = bdf.drop([
+        'Flow ID', 'Src IP', 'Src Port', 'Dst IP','Dst Port',
+        'Protocol','Timestamp','Flow Byts/s', 'Flow Pkts/s','Label'
+        ],axis=1).values
+    # bdf = bdf.iloc[s_read_index:]
+    scaler = load(BSCALER)
+    pca = load(BPCA)
+    return   pca.transform(scaler.transform(bdf))
 
 def mcleanser(start_at_index, predicted_block):
     mdf = predicted_block.copy()

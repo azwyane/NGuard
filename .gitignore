@@ -16,3 +16,4 @@ src/*.csv
 src/logs/debug
 src/logs/info.log
 src/server/*.csv
+src/brain/models/*.parquet

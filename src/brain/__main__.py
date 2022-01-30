@@ -5,7 +5,7 @@ import pathlib
 import pandas as pd
 import pickle
 from . import classifier
-
+from joblib import dump,load
 
 
 
@@ -18,9 +18,7 @@ if pid > 0:
     MODEL_PATH = os.path.join(cwd,"brain/models")
     s_read_index = 0
     print("Parent process:Binary classifier","pid:",os.getpid())
-    with open(MODEL_PATH +'/binary_rf_model','rb') as f:
-        binaryclass_model = pickle.load(f)
-    
+    binaryclass_model = load(MODEL_PATH +'/binary.joblib')
     
     while True:
         if tfile:=glob.glob(DATA_PATH +"/*Flow.csv"): 
