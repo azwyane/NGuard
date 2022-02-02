@@ -14,12 +14,14 @@ CWD = os.getcwd()
 SAVE_TO = CWD + '/server'
 BSCALER = CWD +'/brain/models/bscaler.joblib'
 BPCA = CWD +'/brain/models/bpca.joblib'
+MSCALER = CWD + '/brain/models/mscaler.joblib'
+MPCA = CWD + '/brain/models/mpca.joblib'
 
 def bcleanser(s_read_index,df):
     bdf = df.copy()
     bdf = bdf.drop([
         'Flow ID', 'Src IP', 'Src Port', 'Dst IP','Dst Port',
-        'Protocol','Timestamp','Flow Byts/s', 'Flow Pkts/s','Label'
+        'Timestamp','Flow Byts/s', 'Flow Pkts/s','Fwd Header Len','Label'
         ],axis=1).values
     # bdf = bdf.iloc[s_read_index:]
     scaler = load(BSCALER)
@@ -27,23 +29,21 @@ def bcleanser(s_read_index,df):
     return   pca.transform(scaler.transform(bdf))
 
 def mcleanser(start_at_index, predicted_block):
-    mdf = predicted_block.copy()
-    mdf = mdf[[
-       'Flow Duration', 'TotLen Fwd Pkts', 'Fwd Pkt Len Mean', 'Bwd Pkt Len Min',
-       'Bwd Pkt Len Std', 'Flow IAT Mean', 'Flow IAT Std', 'Fwd IAT Mean', 
-       'Fwd IAT Min', 'Bwd IAT Mean', 'Bwd Pkts/s','PSH Flag Cnt',
-       'Pkt Size Avg', 'Subflow Fwd Byts', 'Init Fwd Win Byts', 'Init Bwd Win Byts',
-       'Active Mean', 'Active Min'
-    ]]
-    mdf = mdf.iloc[start_at_index:]
-    mdf = np.nan_to_num(mdf.values)
-    return mdf
+    mdf = predicted_block
+    print(mdf['Unnamed: 0'])
+    mdf = mdf.drop([
+        'Unnamed: 0','Flow ID', 'sip', 'sport', 'dip','dport',
+        'Timestamp','Flow Byts/s', 'Flow Pkts/s','Fwd Header Len','Label','hash_val'
+        ],axis=1).values
+    scaler = load(MSCALER)
+    pca = load(MPCA)
+    return pca.transform(scaler.transform(mdf))
     
 
 def binaryclassifier(s_read_index,df,binaryclass_model):
     x_clean = bcleanser(s_read_index,df)
     y_predicted = binaryclass_model.predict(x_clean)
-    y_index = np.where(y_predicted == 1)[0]
+    y_index = np.where(y_predicted == 0)[0]
     if  y_index.any():    
         ndf = df.iloc[y_index].copy()
         ndf.rename(columns = {'Src IP':'sip', 'Src Port':'sport', 'Dst IP':'dip', 'Dst Port':'dport', 'Protocol':'proto'},inplace =True)
@@ -61,6 +61,7 @@ def binaryclassifier(s_read_index,df,binaryclass_model):
 def multiclassclassifier(start_at_index,predicted_block,multiclass_model):
     x_cleaned = mcleanser(start_at_index, predicted_block)
     y_predictedm = multiclass_model.predict(x_cleaned)
+    print(np.unique(y_predictedm))
     new_df = pd.DataFrame({'Intrusion':y_predictedm})
     new_df = pd.concat([predicted_block.copy(),new_df],axis=1)
     if pathlib.Path(SAVE_TO + '/final_predicted_intrusion.csv').is_file():    

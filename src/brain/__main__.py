@@ -21,7 +21,7 @@ if pid > 0:
     binaryclass_model = load(MODEL_PATH +'/binary.joblib')
     
     while True:
-        if tfile:=glob.glob(DATA_PATH +"/*Flow.csv"): 
+        if tfile:=glob.glob(DATA_PATH +"/nmap.pcap_Flow.csv"): 
             df = pd.read_csv(tfile[0])
             s_read_index = 0
             temp = classifier.binaryclassifier(s_read_index,df.copy(),binaryclass_model)
@@ -41,18 +41,18 @@ else:
     MODEL_PATH = os.path.join(cwd,"brain/models")
     start_at_index = 0
     print("Child process:Multi Class classifier","pid:",os.getpid())
-    with open(MODEL_PATH +'/multi_rf_model','rb') as modelf:
-        multiclass_model = pickle.load(modelf)
+    multiclass_model = load(MODEL_PATH + '/mclass.joblib')
 
     while True:
 
         if pathlib.Path(PR_DATA_PATH).is_file():
             try:
-                predicted_block = pd.read_csv(PR_DATA_PATH)
-                total_read = classifier.multiclassclassifier(start_at_index,predicted_block,multiclass_model)
+                predicted_block = pd.read_csv(PR_DATA_PATH,index_col=False)
+                total_read = classifier.multiclassclassifier(start_at_index,predicted_block.copy(),multiclass_model)
                 start_at_index += total_read
             except Exception as e:
-                sleep(20)
+                print(e)
+                sleep(1)
 
            
      
