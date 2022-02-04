@@ -6,6 +6,8 @@ import pandas as pd
 import pickle
 from . import classifier
 from joblib import dump,load
+from sklearn.ensemble import VotingClassifier
+
 
 
 
@@ -26,7 +28,7 @@ if pid > 0:
             s_read_index = 0
             temp = classifier.binaryclassifier(s_read_index,df.copy(),binaryclass_model)
             s_read_index += temp
-   
+            break
         else:
             print("not found")
             sleep(5)
@@ -50,6 +52,7 @@ else:
                 predicted_block = pd.read_csv(PR_DATA_PATH,index_col=False)
                 total_read = classifier.multiclassclassifier(start_at_index,predicted_block.copy(),multiclass_model)
                 start_at_index += total_read
+                break
             except Exception as e:
                 print(e)
                 sleep(1)

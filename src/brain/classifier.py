@@ -20,21 +20,21 @@ MPCA = CWD + '/brain/models/mpca.joblib'
 def bcleanser(s_read_index,df):
     bdf = df.copy()
     bdf = bdf.drop([
-        'Flow ID', 'Src IP', 'Src Port', 'Dst IP','Dst Port',
-        'Timestamp','Flow Byts/s', 'Flow Pkts/s','Fwd Header Len','Label'
-        ],axis=1).values
+        'Flow ID', 'Src IP', 'Src Port', 'Dst IP','Dst Port','Protocol',
+        'Timestamp','Flow Byts/s', 'Flow Pkts/s','Label'
+        ],axis=1).drop_duplicates().values
     # bdf = bdf.iloc[s_read_index:]
     scaler = load(BSCALER)
     pca = load(BPCA)
     return   pca.transform(scaler.transform(bdf))
 
 def mcleanser(start_at_index, predicted_block):
-    mdf = predicted_block
+    mdf = predicted_block.copy()
     print(mdf['Unnamed: 0'])
     mdf = mdf.drop([
-        'Unnamed: 0','Flow ID', 'sip', 'sport', 'dip','dport',
-        'Timestamp','Flow Byts/s', 'Flow Pkts/s','Fwd Header Len','Label','hash_val'
-        ],axis=1).values
+        'Unnamed: 0','Flow ID', 'sip', 'sport', 'dip','dport','proto',
+        'Timestamp','Flow Byts/s', 'Flow Pkts/s','Label','hash_val'
+        ],axis=1).drop_duplicates().values
     scaler = load(MSCALER)
     pca = load(MPCA)
     return pca.transform(scaler.transform(mdf))
@@ -43,7 +43,8 @@ def mcleanser(start_at_index, predicted_block):
 def binaryclassifier(s_read_index,df,binaryclass_model):
     x_clean = bcleanser(s_read_index,df)
     y_predicted = binaryclass_model.predict(x_clean)
-    y_index = np.where(y_predicted == 0)[0]
+    #np.savetxt('temp.txt',binaryclass_model.predict_proba(x_clean),fmt='%4.6f',delimiter=' ')
+    y_index = np.where(y_predicted == -1)[0]
     if  y_index.any():    
         ndf = df.iloc[y_index].copy()
         ndf.rename(columns = {'Src IP':'sip', 'Src Port':'sport', 'Dst IP':'dip', 'Dst Port':'dport', 'Protocol':'proto'},inplace =True)
