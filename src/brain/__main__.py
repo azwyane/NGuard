@@ -112,7 +112,7 @@ def analyze_save(csv_to_analyze,save_to):
 
 while True:
     
-    csv_to_analyze = f'{DATA_PATH}nmap.pcap_Flow.csv'
+    csv_to_analyze = f'{DATA_PATH}icmpflood_Flow.csv'
 
     analyze_save(csv_to_analyze,save_to=output_dir)
     break

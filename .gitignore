@@ -19,3 +19,5 @@ src/server/*.csv
 src/brain/models/*.parquet
 brain_output
 src/brain/models/*
+*.parquet
+*.zip
