@@ -21,3 +21,5 @@ brain_output
 src/brain/models/*
 *.parquet
 *.zip
+src/brain_output/*
+src/cicflowmeter/jar file/data/daily

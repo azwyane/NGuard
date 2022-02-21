@@ -10,6 +10,7 @@ import configparser
 import sys
 
 
+
 cparser = configparser.RawConfigParser()
 cwd = os.getcwd()
 
@@ -17,13 +18,14 @@ if not cparser.read(os.path.join(cwd,"brain.config")):
     raise Exception("Brain needs a config file: brain.config")
     sys.exit()
 
-output_dir = cparser.get('brain','output_dir')
-if not os.path.isdir(f'{cwd}/{output_dir}'):
-    os.makedirs(f'{cwd}/{output_dir}')
+OUTPUT_DIR = cparser.get('brain','OUTPUT_DIR')
+HOST_ADDRESS = cparser.get('brain','HOST_ADDRESS')
+if not os.path.isdir(f'{cwd}/{OUTPUT_DIR}'):
+    os.makedirs(f'{cwd}/{OUTPUT_DIR}')
 
-output_dir = f'{cwd}/{output_dir}'
+OUTPUT_DIR = f'{cwd}/{OUTPUT_DIR}'
 
-DATA_PATH = os.path.join(cwd,"cicflowmeter/data/daily/")
+DATA_PATH = os.path.join(cwd,"cicflowmeter/jar file/data/daily/")
 MODEL_PATH = os.path.join(cwd,"brain/models/")
 
 
@@ -92,29 +94,34 @@ def analyze_save(csv_to_analyze,save_to):
     df = pd.DataFrame()
     test_dataframe = pd.read_csv(csv_to_analyze)
     test_dataframe.drop_duplicates(subset=['Flow ID'],inplace=True)
-    df = test_dataframe[['Src IP', 'Src Port', 'Dst IP','Dst Port','Protocol',
-                        'Timestamp']].copy()
-    test_dataframe.drop(['Flow ID', 'Src IP', 'Src Port', 'Dst IP','Dst Port','Protocol',
-                        'Timestamp','Flow Byts/s', 'Flow Pkts/s','Label'],inplace=True,axis=1)
-    predictions= bclf.predict(bpca.transform(bscaler.transform(test_dataframe.values)))
+    test_dataframe.drop(test_dataframe.loc[test_dataframe['Src IP'] == str(HOST_ADDRESS)].index,inplace=True)
+    print(test_dataframe.info())
+    if not test_dataframe.empty:
+        df = test_dataframe[['Src IP', 'Src Port', 'Dst IP','Dst Port','Protocol',
+                            'Timestamp']].copy()
+        test_dataframe.drop(['Flow ID', 'Src IP', 'Src Port', 'Dst IP','Dst Port','Protocol',
+                            'Timestamp','Flow Bytes/s', 'Flow Packets/s','Label'],inplace=True,axis=1)
+        predictions= bclf.predict(bpca.transform(bscaler.transform(test_dataframe.values)))
 
-    df['B/A'] = predictions
-    for clf_feature,clf in zip(features,clf_s):
-        y_p = clf.predict(test_dataframe[features[clf_feature]].values)
-        df[clf_feature.replace("_feature","")] = predictions
-    
-    for c,s,p,name in zip(clfs,scls,pcas,attack_names):
-        y_p = c.predict(p.transform(s.transform(test_dataframe.values)))
-        df[f'{name}PCA'] = y_p
-    df['avg'] = np.prod(df[['B/A','dos','ddos','portscan','patator','web','dosPCA','ddosPCA','portscanPCA','patatorPCA','webPCA']].values,axis=1)
-    df.to_csv(f'{save_to}/{csv_to_analyze.split("/")[::-1][0]}')
+        df['B/A'] = predictions
+        # for clf_feature,clf in zip(features,clf_s):
+        #     y_p = clf.predict(test_dataframe[features[clf_feature]].values)
+        #     df[clf_feature.replace("_feature","")] = predictions
+        
+        for c,s,p,name in zip(clfs,scls,pcas,attack_names):
+            y_p = c.predict(p.transform(s.transform(test_dataframe.values)))
+            df[f'{name}PCA'] = y_p
+        # df['avg'] = np.prod(df[['B/A','dos','ddos','portscan','patator','web','dosPCA','ddosPCA','portscanPCA','patatorPCA','webPCA']].values,axis=1)
+        df.to_csv(f'{save_to}/{csv_to_analyze.split("/")[::-1][0]}',index=False)
+    else:
+        print("No incoming connections")
  
 
 while True:
     
-    csv_to_analyze = f'{DATA_PATH}icmpflood_Flow.csv'
+    csv_to_analyze = f'{DATA_PATH}2022-02-21_Flow1.csv'
 
-    analyze_save(csv_to_analyze,save_to=output_dir)
+    analyze_save(csv_to_analyze,save_to=OUTPUT_DIR)
     break
 
 
