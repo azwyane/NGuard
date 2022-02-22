@@ -1,62 +1,16 @@
-2022-01-13 00:02:16 - wlp2s0
-2022-01-13 00:02:16 - open wlp2s0 fail -> wlp2s0: You don't have permission to capture on that device (socket: Operation not permitted)
-2022-01-13 00:02:16 - open wlp2s0 fail ->wlp2s0: You don't have permission to capture on that device (socket: Operation not permitted)
-2022-01-13 00:02:30 - wlp2s0
-2022-01-13 00:02:30 - Pcap is listening...
-2022-01-14 09:57:50 - wlan0
-2022-01-14 09:57:50 - open wlan0 fail -> wlan0: You don't have permission to capture on that device (socket: Operation not permitted)
-2022-01-14 09:57:50 - open wlan0 fail ->wlan0: You don't have permission to capture on that device (socket: Operation not permitted)
-2022-01-14 09:58:19 - wlan0
-2022-01-14 09:58:19 - open wlan0 fail -> wlan0: You don't have permission to capture on that device (socket: Operation not permitted)
-2022-01-14 09:58:19 - open wlan0 fail ->wlan0: You don't have permission to capture on that device (socket: Operation not permitted)
-2022-01-14 09:58:49 - wlan0
-2022-01-14 09:58:50 - Pcap is listening...
-2022-01-14 10:29:41 - wlan0
-2022-01-14 10:29:41 - Pcap is listening...
-2022-01-14 10:32:00 - snoop
-2022-01-14 10:32:00 - open snoop fail -> snoop: You don't have permission to capture on that device (socket: Operation not permitted)
-2022-01-14 10:32:00 - open snoop fail ->snoop: You don't have permission to capture on that device (socket: Operation not permitted)
-2022-01-14 10:32:08 - snoop
-2022-01-14 10:32:09 - Pcap is listening...
-2022-01-20 16:37:01 - wlan0
-2022-01-20 16:37:02 - Pcap is listening...
-2022-01-29 15:09:43 - wlan0
-2022-01-29 15:09:44 - Pcap is listening...
-2022-01-29 15:11:47 - wlan0
-2022-01-29 15:11:47 - Pcap is listening...
-2022-01-29 15:13:29 - wlan0
-2022-01-29 15:13:30 - Pcap is listening...
-2022-01-29 15:20:12 - wlan0
-2022-01-29 15:20:12 - Pcap is listening...
-2022-01-29 15:51:13 - wlan0
-2022-01-29 15:51:13 - Pcap is listening...
-2022-01-29 15:55:13 - wlan0
-2022-01-29 15:55:14 - Pcap is listening...
-2022-02-18 11:46:17 - wlan0
-2022-02-18 11:46:18 - Pcap is listening...
-2022-02-18 11:47:00 - wlan0
-2022-02-18 11:47:00 - Pcap is listening...
-2022-02-18 11:47:19 - wlan0
-2022-02-18 11:47:19 - Pcap is listening...
-2022-02-21 08:34:17 - wlan0
-2022-02-21 08:34:17 - Pcap is listening...
-2022-02-21 08:34:41 - Forward flow closed due to FIN Flag
-2022-02-21 08:34:57 - Forward flow closed due to FIN Flag
-2022-02-21 08:34:57 - Forward flow closed due to FIN Flag
-2022-02-21 08:34:57 - Forward flow closed due to FIN Flag
-2022-02-21 08:34:58 - Forward flow closed due to FIN Flag
-2022-02-21 08:34:58 - Forward flow closed due to FIN Flag
-2022-02-21 08:34:58 - Forward flow closed due to FIN Flag
-2022-02-21 08:34:58 - Forward flow closed due to FIN Flag
-2022-02-21 08:34:58 - Forward flow closed due to FIN Flag
-2022-02-21 08:34:58 - Forward flow closed due to FIN Flag
-2022-02-21 08:34:58 - Forward flow closed due to FIN Flag
-2022-02-21 08:35:28 - Forward flow closed due to FIN Flag
-2022-02-21 08:36:05 - Forward flow closed due to FIN Flag
-2022-02-21 08:37:32 - Forward flow closed due to FIN Flag
-2022-02-21 08:37:32 - Forward flow closed due to FIN Flag
-2022-02-21 08:37:32 - Forward flow closed due to FIN Flag
-2022-02-21 08:37:32 - Forward flow closed due to FIN Flag
-2022-02-21 08:37:32 - Forward flow closed due to FIN Flag
-2022-02-21 08:38:28 - Forward flow closed due to FIN Flag
-2022-02-21 08:38:28 - Forward flow closed due to FIN Flag
+2022-02-22 09:35:53 - wlp2s0
+2022-02-22 09:35:53 - Error while opening file for capture: /home/sandesh/e/CICFlowMeter/target/data/daily/traffic1.pcap: No such file or directory
+2022-02-22 09:36:09 - wlp2s0
+2022-02-22 09:36:09 - Error while opening file for capture: /home/sandesh/e/CICFlowMeter/target/data/daily/traffic1.pcap: No such file or directory
+2022-02-22 09:36:14 - wlp2s0
+2022-02-22 09:36:15 - Error while opening file for capture: /home/sandesh/e/CICFlowMeter/target/data/daily/traffic1.pcap: No such file or directory
+2022-02-22 09:36:35 - wlp2s0
+2022-02-22 09:36:35 - Error while opening file for capture: /home/sandesh/e/CICFlowMeter/target/data/daily/traffic1.pcap: No such file or directory
+2022-02-22 09:37:31 - wlp2s0
+2022-02-22 09:37:31 - Error while opening file for capture: /home/sandesh/e/CICFlowMeter/target/data/daily/traffic1.pcap: No such file or directory
+2022-02-22 09:38:21 - wlp2s0
+2022-02-22 09:53:49 - wlp2s0
+2022-02-22 09:53:49 - Error while opening file for capture: /home/sandesh/e/CICFlowMeter/target/data/daily/traffic1.pcap: No such file or directory
+2022-02-22 09:54:51 - wlp2s0
+2022-02-22 09:54:52 - Error while opening file for capture: /home/sandesh/e/CICFlowMeter/target/data/daily/traffic1.pcap: No such file or directory
+2022-02-22 09:56:03 - wlp2s0

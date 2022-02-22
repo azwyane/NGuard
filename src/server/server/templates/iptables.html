@@ -3,6 +3,230 @@
 
 {% block content %}
 
-<P>IPTABLES RULES</P>
-{{iptb_val}}
+
+
+<div class="lg:pt-6  max-w-5xl  px-4">
+  <h2 class="lg:pt-4 text-2xl leading-none font-bold text-gray-900 mb-10">Rules and Policies</h2>
+             <div class="bg-white  rounded-lg my-2 p-4 sm:p-6 xl:p-8 ">
+
+      <div class="component-preview not-prose   max-w-4xl" id="swap-text">
+          <div class="pb-2 text-sm font-bold mb-2 flex items-center justify-between">
+              <div>
+              <a class="opacity-20 hover:opacity-60 text-sm font-semibold lg:text-lg"" >#</a>
+              <span class="text-sm font-semibold lg:text-lg">Rules</span>
+              </div>
+              <label for="rule-add-modal"class=" btn modal-button btn-accent   btn-sm gap-2 ">
+
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+</svg>
+  <span class="tex-sm font-semibold">add rules</span>
+
+</label>
+          </div>
+
+
+
+
+          <div class="grid">
+              <div class="tabs z-10 -mb-px">
+                  <button class="tab tab-lifted  ">Blocked rules</button>
+                  <button class="tab tab-lifted  ">Suspicious rule</button>
+                  <button class="tab tab-lifted tab-active [--tab-bg:hsl(var(--b2))] ">Manual Rule</button>
+                  <div class="tab tab-lifted mr-6 flex-1 cursor-default [--tab-border-color:transparent]"></div>
+              </div>
+              <div class="bg-base-300 relative overflow-x-auto rounded-b-xl rounded-tr-xl">
+              <div class="preview border-base-300 bg-base-200  rounded-b-xl rounded-tr-xl border bg-cover bg-top p-4 undefined" style="background-size: 5px 5px">
+
+
+
+
+
+
+
+          <div class="overflow-x-auto">
+  <table class="table table-compact w-full">
+    <thead>
+      <tr>
+
+        <th></th>
+        <th>Action</th>
+        <th>From</th>
+        <th>To</th>
+        <th>IPv</th>
+        <th>Protocol</th>
+        <th>Logging</th>
+      </tr>
+    </thead>
+    <tbody>
+
+    </tbody>
+    <tfoot>
+      <tr>
+          <th></th>
+        <th>Action</th>
+        <th>From</th>
+        <th>To</th>
+        <th>IPv</th>
+        <th>Protocol</th>
+        <th>Logging</th>
+      </tr>
+    </tfoot>
+  </table>
+</div>
+
+
+
+
+
+
+
+              </div>
+              </div>
+          </div>
+      </div>
+         </div>
+
+
+
+
+<input type="checkbox" id="rule-add-modal" class="modal-toggle">
+<div class="modal">
+  <div class="modal-box">
+      <h3 class="font-bold text-md"><span class="text-base-300 pr-2">#</span>Create a new Rule!</h3>
+
+
+       <div class="flex-col space-y-2 ">
+        <div class="  flex pt-2 align-base justify-center gap-2">
+         <label for="policy" class="block text-sm py-1 md:text-base font-medium  text-gray-800">
+            Policy:  </label>
+         <select id="policy" name="policy" autocomplete="policy"
+             class="mt-1 block w-28 py-1 px-3 border-b border-b-gray-300 bg-white  focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+             <option value="allow">Allow</option>
+             <option value="ignore">Ignore</option>
+             <option value="reject">Reject</option>
+         </select>
+     </div>
+           <div class="  whitespace-nowrap pt-2 flex items-center justify-center gap-2">
+      <label for="direction" class="block text-sm py-1 md:text-base font-medium text-gray-800">
+         Direction:
+          </label>
+      <select id="direction" name="direction"
+           class="mt-1 block w-28 py-1 px-3 border-b border-b-gray-300 bg-white  focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+          <option value="incoming">incoming</option>
+          <option value="outgoing">outgoing</option>
+      </select>
+  </div>
+                  <div class="  whitespace-nowrap pt-2 flex items-center justify-center">
+      <label for="ip-version" class="block text-sm py-1 md:text-base font-medium  text-gray-800">
+         IP version:
+          </label>
+      <select id="ip-version" name="ip-version"
+           class="mt-1 block w-28 py-1 px-3 border-b border-b-gray-300 bg-white  focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+          <option value="v4">IPv4</option>
+          <option value="v6">IPv6</option>
+      </select>
+  </div>
+
+
+
+
+
+                             <div class="  whitespace-nowrap pt-2 flex items-center justify-center gap-2">
+      <label for="source" class="block text-sm py-1 md:text-base font-medium text-gray-800">
+         Source:
+          </label>
+                                 <div class="flex gap-2">
+            <input id="source" name="source-ip" type="text" placeholder="0.0.0.0" class="input sm:text-sm w-28 w-full max-w-xs focus:outline-none rounded-none border-0 border-b border-b-gray-100 focus:border-b-primary">
+             <input id="source-port" name="source-port" type="text" placeholder="Any Port" class="input sm:text-sm w-28 w-full max-w-xs focus:outline-none rounded-none border-0 border-b border-b-gray-100 focus:border-b-primary">
+
+                                 </div></div>
+
+
+
+                  <div class="  whitespace-nowrap pt-2 flex items-center justify-center gap-2">
+      <label for="destination" class="block text-sm py-1 md:text-base font-medium text-gray-800">
+         Destination:
+          </label>
+                                 <div class="flex gap-2">
+            <input id="destination" name="source-ip" type="text" placeholder="0.0.0.0" class="input sm:text-sm w-28 w-full max-w-xs focus:outline-none rounded-none border-0 border-b border-b-gray-100 focus:border-b-primary">
+             <input id="destination-port" name="source-port" type="text" placeholder="Any Port" class="input sm:text-sm w-28 w-full max-w-xs focus:outline-none rounded-none border-0 border-b border-b-gray-100 focus:border-b-primary">
+
+                                 </div></div>
+
+
+                  <div class="  whitespace-nowrap pt-2 flex items-center justify-center gap-2">
+      <label for="protocol" class="block text-sm py-1 md:text-base font-medium  text-gray-800">
+         Protocol:
+          </label>
+      <select id="protocol" name="ip-version"
+           class="mt-1 block w-28 py-1 px-3 border-b border-b-gray-300 bg-white  focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+          <option value="any">Any</option>
+          <option value="udp">UDP</option>
+          <option value="tcp">TCP</option>
+      </select>
+  </div>
+
+
+
+
+
+
+
+                             <div class="  whitespace-nowrap pt-2 flex items-center justify-center gap-2">
+      <label for="interface" class="block text-sm py-1 md:text-base font-medium  text-gray-800">
+         Interface:
+          </label>
+      <select id="interface" name="interface"
+           class="mt-1 block w-28 py-1 px-3 border-b border-b-gray-300 bg-white  focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+          <option value="Wlp2s0">Wlp2s0</option>
+          <option value="enp3s0">enp3s0</option>
+          <option value="loop">loop</option>
+      </select>
+  </div>
+
+
+
+
+
+
+
+
+</div>
+
+
+
+
+    <div class="modal-action">
+                <label for="rule-add-modal"class=" btn btn-md btn-accent   btn-sm gap-2 ">
+
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+</svg>
+  <span class="tex-sm font-semibold">add rule</span>
+
+</label>
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 {% endblock %}
+
+
+
+
+
