@@ -2,14 +2,22 @@ import csv
 import os
 from datetime import datetime
 import pandas as pd
+import json
+import sys
 
 CWD =os.getcwd()
-FILE_PATH = CWD.replace('/server','') + '/cicflowmeter/data/daily/'
+try:
+    with open(CWD.replace('/server','') + '/brain.json') as f:
+        config = json.load(f)
+        FILE_PATH = f"{CWD.replace('/server','')}/{config['OUTPUT_DIR']}/"
+except Exception as e:
+    print(e)
+    sys.exit()
 
 def get_packet_stream(rows):
 
     dt = datetime.now()
-    filepath = FILE_PATH + dt.strftime("%Y-%m-%d") + "_Flow.csv"
+    filepath = f"{FILE_PATH}{dt.strftime('%Y-%m-%d')}_Flow.csv"  
 
     num_lines = sum(1 for line in open(filepath))
 

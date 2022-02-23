@@ -6,26 +6,29 @@ from joblib import dump,load
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
 import os
-import configparser
 import sys
+import json
 
 
 
-cparser = configparser.RawConfigParser()
 cwd = os.getcwd()
 
-if not cparser.read(os.path.join(cwd,"brain.config")):
+try:
+    with open('brain.json','r') as f:
+        config = json.load(f)
+
+except:
     raise Exception("Brain needs a config file: brain.config")
     sys.exit()
 
-OUTPUT_DIR = cparser.get('brain','OUTPUT_DIR')
-HOST_ADDRESS = cparser.get('brain','HOST_ADDRESS')
+OUTPUT_DIR = config.get('OUTPUT_DIR',None)
+HOST_ADDRESS = config.get('HOST_ADDRESS',None)
 if not os.path.isdir(f'{cwd}/{OUTPUT_DIR}'):
     os.makedirs(f'{cwd}/{OUTPUT_DIR}')
 
 OUTPUT_DIR = f'{cwd}/{OUTPUT_DIR}'
 
-DATA_PATH = os.path.join(cwd,"cicflowmeter/jar file/data/daily/")
+DATA_PATH = os.path.join(cwd,"data/daily/")
 MODEL_PATH = os.path.join(cwd,"brain/models/")
 
 
@@ -95,23 +98,23 @@ def analyze_save(csv_to_analyze,save_to):
     test_dataframe = pd.read_csv(csv_to_analyze)
     test_dataframe.drop_duplicates(subset=['Flow ID'],inplace=True)
     test_dataframe.drop(test_dataframe.loc[test_dataframe['Src IP'] == str(HOST_ADDRESS)].index,inplace=True)
-    print(test_dataframe.info())
+   
     if not test_dataframe.empty:
         df = test_dataframe[['Src IP', 'Src Port', 'Dst IP','Dst Port','Protocol',
                             'Timestamp']].copy()
         test_dataframe.drop(['Flow ID', 'Src IP', 'Src Port', 'Dst IP','Dst Port','Protocol',
-                            'Timestamp','Flow Bytes/s', 'Flow Packets/s','Label'],inplace=True,axis=1)
+                            'Timestamp','Flow Byts/s', 'Flow Pkts/s','Label'],inplace=True,axis=1)
         predictions= bclf.predict(bpca.transform(bscaler.transform(test_dataframe.values)))
 
         df['B/A'] = predictions
-        # for clf_feature,clf in zip(features,clf_s):
-        #     y_p = clf.predict(test_dataframe[features[clf_feature]].values)
-        #     df[clf_feature.replace("_feature","")] = predictions
+        for clf_feature,clf in zip(features,clf_s):
+            y_p = clf.predict(test_dataframe[features[clf_feature]].values)
+            df[clf_feature.replace("_feature","")] = predictions
         
         for c,s,p,name in zip(clfs,scls,pcas,attack_names):
             y_p = c.predict(p.transform(s.transform(test_dataframe.values)))
             df[f'{name}PCA'] = y_p
-        # df['avg'] = np.prod(df[['B/A','dos','ddos','portscan','patator','web','dosPCA','ddosPCA','portscanPCA','patatorPCA','webPCA']].values,axis=1)
+        df['avg'] = np.prod(df[['B/A','dos','ddos','portscan','patator','web','dosPCA','ddosPCA','portscanPCA','patatorPCA','webPCA']].values,axis=1)
         df.to_csv(f'{save_to}/{csv_to_analyze.split("/")[::-1][0]}',index=False)
     else:
         print("No incoming connections")
@@ -119,7 +122,7 @@ def analyze_save(csv_to_analyze,save_to):
 
 while True:
     
-    csv_to_analyze = f'{DATA_PATH}2022-02-21_Flow1.csv'
+    csv_to_analyze = f'{DATA_PATH}2022-02-23_Packet1.csv'
 
     analyze_save(csv_to_analyze,save_to=OUTPUT_DIR)
     break

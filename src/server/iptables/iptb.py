@@ -4,12 +4,27 @@ import pandas as pd
 import numpy as np
 import pathlib
 from . import executor 
+import json
+
+
+
+try:
+    with open('ips_config.json','r') as f:
+        config = json.load(f)
+except Exception as e:
+    import sys
+    print(e,"didn\'t found config for the executor")
+    sys.exit()
+
 
 PROJECT_PATH = '.'
 EXCLUDE = []
 BLOCK = []
 UNBLOCK = []
-DEFAULT_IFACE = "wlan0"
+DEFAULT_IFACE = config.get("interface",None)
+
+
+
 
 def csv_write_append(pathoffile,sip, sport, dip, dport,proto,hash_val,iface=DEFAULT_IFACE):
     if pathlib.Path(pathoffile).is_file():
