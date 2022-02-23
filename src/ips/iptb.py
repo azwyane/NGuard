@@ -68,7 +68,7 @@ def block(sip, sport, dip, dport,proto,iface=DEFAULT_IFACE):
         executor.blocker(sip, sport, dip, dport,proto,iface=DEFAULT_IFACE)
 
  
-def unbock(sip, sport, dip, dport,proto,iface=DEFAULT_IFACE):
+def unblock(sip, sport, dip, dport,proto,iface=DEFAULT_IFACE):
     hash_val = hashlib.md5((str(sip)+str(sport)+str(dip)+str(dport)+str(proto)+str(iface)).encode('utf-8')).hexdigest()
     if pathlib.Path('./blocked.csv').is_file():
         df = pd.read_csv('./blocked.csv')

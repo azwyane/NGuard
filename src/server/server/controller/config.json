@@ -1,10 +1,15 @@
  {
 
  "system":{
-   "NGUARD_MODE": "IPS"
+   "NGUARD_MODE": "IPS", 
+   "INTERFACE": "wlan0"
  },
  "notification":{
  "NOTIFICATION_EMAIL": "enable",
  "NOTIFICATION_DESKTOP": "enable",
  "NOTIFICATION_EMAIL-LIST": []
- }}
+ },
+ "manual_ips":{
+   "PROJECT_PATH" : "manual_policy"
+ }
+}

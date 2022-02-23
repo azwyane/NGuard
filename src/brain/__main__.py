@@ -68,7 +68,7 @@ def signal_to_server(csv_to_analyze):
 if __name__ == '__main__':
     
     try:
-        with open('brain.json','r') as f:
+        with open('brain_config.json','r') as f:
             config = json.load(f)
 
     except:
@@ -165,12 +165,13 @@ if __name__ == '__main__':
                 logger.info(f'Found new dump {date_flow_count}, saving into output dir: {save_to.split("/")[::-1][1]}')
                 if last_date == datetime.now().strftime("%Y-%m-%d"):
                     count +=1
+                    logger.info(f'Waiting for new dump after {date_flow_count}')
+
                 else:
                     count = 1
                     last_date = datetime.now().strftime("%Y-%m-%d")
                     logger.info('========New Day LOG=======')
             except Exception as e:
-                logger.info(f'Waiting for new dump {date_flow_count}')
                 sleep(2)
         except KeyboardInterrupt:
             logger.info("Shutting Down Brain")

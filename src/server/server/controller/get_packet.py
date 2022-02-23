@@ -7,7 +7,7 @@ import sys
 
 CWD =os.getcwd()
 try:
-    with open(CWD.replace('/server','') + '/brain.json') as f:
+    with open(CWD.replace('/server','') + '/brain_config.json') as f:
         config = json.load(f)
         FILE_PATH = f"{CWD.replace('/server','')}/{config['OUTPUT_DIR']}/"
 except Exception as e:
