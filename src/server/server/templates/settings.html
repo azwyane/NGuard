@@ -9,76 +9,153 @@
 
 
 
-        
-<div class="pt-6  max-w-5xl  px-4">
-  <h2 class="pt-4 pl-8 text-2xl leading-none font-bold text-gray-900 mb-10">Settings</h2>
-  <form id="setting-form">
-     <div class="bg-white  rounded-lg my-2 p-4 sm:p-6 xl:p-8 ">
-        <div class="block w-full overflow-x-auto">
-          <h3 class="pb-2 text-xl leading-none border-b font-semibold text-gray-900 mb-10">System</h3>
-         
-            <div class="  whitespace-nowrap divide-y  flex items-between justify-center">
-               <label for="country" class="block text-sm md:text-base font-medium flex-1 text-gray-800">
-                   NGuard working mode</label>
-               <select id="country" name="country" autocomplete="country"
-                   class="mt-1 block w-28 py-1 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                   <option>IPS</option>
-                   <option>IDS</option>
-               </select>
-           </div>
-   
-        </div>
-     </div>
-     <div class="bg-white  rounded-lg my-2 p-4 sm:p-6 xl:p-8 ">
-      <div class="block w-full overflow-x-auto">
-        
-        <h3 class="pb-2 text-xl leading-none border-b font-semibold text-gray-900 mb-10">Alert and notifications</h3>
-        <div class="flex-col space-y-2 divide-y divide-dashed">
-        <div class="  flex items-between justify-center py-2">
-         <label for="country" class="block text-sm md:text-base font-medium flex-1 text-gray-800">
-             Desktop Notification for alerts, info and error </label>
-         <select id="country" name="country" autocomplete="country"
-             class="mt-1 block w-28 py-1 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-             <option>enable</option>
-             <option>disable</option>
-         </select>
-     </div>            <div class="  whitespace-nowrap py-2 flex items-between justify-center">
-      <label for="country" class="block text-sm py-1 md:text-base font-medium flex-1 text-gray-800">
-         Send alerts, info and error as email
-          </label>
-      <select id="country" name="country" autocomplete="country"
-          class="mt-1 block w-28 py-1 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-          <option>enable</option>
-          <option>disable</option>
-      </select>
-  </div>     
-  <div>  
-       <div class="  whitespace-nowrap py-2 flex items-between justify-center">
-   <label for="country" class="block text-sm md:text-base font-medium flex-1 text-gray-800">
-       Email lists</label>
-       <select id="country" name="country" autocomplete="country"
-       class="mt-1 block w-28 py-1 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-       <option>enable</option>
-       <option>disable</option>
-   </select>
+
+<div class="lg:pt-6  max-w-5xl  px-4">
+  <h2 class="lg:pt-4 text-2xl leading-none font-bold text-gray-900 mb-10">Rules and Policies</h2>
+
+
+
+            <!------    Working mode and system related settings ------>
+
+    <div class="bg-white  rounded-lg my-2 p-4 sm:p-6 xl:p-8 ">
+
+        <h3 class="font-bold text-md"><span class="text-base-300 pr-2">#</span>NGuard System</h3>
+
+
+
+
+
+        <form id="system" class="flex-col gap-y-8 space-y-2 ">
+                <div class="  flex pt-2 align-base justify-center gap-2">
+                    <label for="nguard_mode" class="block text-sm py-1 align-baseline md:text-base font-medium  text-gray-800">
+                    NGuard working mode:  </label>
+                     <select id="nguard_mode" name="nguard_mode" autocomplete="policy"
+                     class="mt-1 block w-28 py-1 px-3 border-b border-b-gray-300 bg-white  focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                        <option  value="ids" >IDS</option>
+                         <option selected value="ips" selected>IPS</option>
+                    </select>
+                </div>
+        </form>
+                                  <button class="block mx-auto  flex btn modal-button lowercase btn-ghost bg-base-200   btn-sm gap-2 mt-8 " onclick='handleUpdate("system");'>
+
+ <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+</svg>
+  <span class="tex-sm font-semibold">update</span>
+
+</button>
+
+    </div>
+
+        <!------------------------- ---------------------------------------->
+
+
+            <!------    Desktop notification and email related settings ------>
+
+    <div class="bg-white  rounded-lg my-2 p-4 mt-4 sm:p-6 xl:p-8 ">
+        <div class="flex justify-between items-center">
+
+        <h3 class="font-bold text-md"><span class="text-base-300 pr-2">#</span>Alert and Notifications</h3>
+
+            </div>
+
+
+
+
+
+        <form id="notification_email" class="flex-col space-y-2 pt-2">
+                <div class="  flex pt-2 align-base justify-center gap-2">
+                    <label for="notification" class="block text-sm py-1 md:text-base font-medium  text-gray-800">
+                    Desktop Notification for alerts,info and error: </label>
+                     <select id="notification" name="policy" autocomplete="policy"
+                     class="mt-1 block w-28 py-1 px-3 border-b border-b-gray-300 bg-white  focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                        <option value="enable" >enable</option>
+                         <option value="disable" >disable</option>
+                    </select>
+                </div>
+
+                <div class="  flex pt-2 align-base justify-center gap-2">
+                    <label for="email" class="block text-sm py-1 md:text-base font-medium  text-gray-800">
+                    Send alerts,info and error as email: </label>
+                     <select id="email" name="policy" autocomplete="policy"
+                     class="mt-1 block w-28 py-1 px-3 border-b border-b-gray-300 bg-white  focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                        <option value="enable" >enable</option>
+                         <option value="disable" >disable</option>
+                    </select>
+                </div>
+        </form>
+<div id="email-list">
+<div class="flex items-center justify-between mt-8 lg:mt-4">
+         <h4 class="font-bold text-md "><span class="text-base-300 pr-2">#</span>Email lists</h4>
+
+        <button class=" btn modal-button btn-ghost bg-base-200  btn-sm gap-2 ">
+
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+</svg>
+  <span class="tex-sm font-semibold lowercase">add email </span>
+
+</button>
+
+    </div>
+              <div class="mt-4 bg-base-300 relative overflow-x-auto rounded-xl">
+              <div class="preview border-base-300 bg-base-200  rounded-xl border bg-cover bg-top p-4 undefined" style="background-size: 5px 5px">
+
+  <table class="table table-compact w-full">
+
+    <tbody>
+
+    </tbody>
+<tr>
+    <td>1</td>
+    <td>facebook.com</td>
+    <td></td>
+
+</tr>
+      <tr>
+    <td>2</td>
+    <td>facebook.com</td>
+</tr>
+  </table>
+              </div>
+              </div>
 </div>
-       <div class="grid grid-cols-3 py-2 grid-flow-row gap-4">
-        
-       </div>
-     
-   
+
+
+             <button class="block mx-auto  flex btn modal-button lowercase btn-ghost bg-base-200   btn-sm gap-2 mt-8 ">
+
+ <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+</svg>
+  <span class="tex-sm font-semibold">update</span>
+
+</button>
+
+    </div>
+
+        <!------------------------- ---------------------------------------->
+
+
+
 </div>
 
 
 
 
 
-      </div>
-   </div>
-</form>
-  </div>
 
+    <script type="text/javascript">
+		console.log("hello")
+    function handleUpdate(formId){
+        alert("Sending Json");
+        var form =document.getElementById("settings");
+        var formData = JSON.stringify($(`#${formId}`).serializeArray());
 
+        console.log(formData)
+
+	}
+
+ </script>
 
 
 
@@ -124,21 +201,6 @@
 
 
 
-
-<!--     
-    <script type="text/javascript">
-		console.log("hello")
-    function submitform(event){
-		event.preventDefault();
-        alert("Sending Json");
-        var form =document.getElementById("settings");
-        var formData = JSON.stringify($("#settings").serializeArray());
-        console.log(formData)
-      
-	}
-	
- </script> -->
-    
 
 
 
