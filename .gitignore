@@ -24,3 +24,6 @@ src/brain/models/*
 src/brain_output/*
 src/cicflowmeter/jarfile/data/daily
 src/data/daily/*
+src/predictions/*
+src/logs/*
+src/brain_logs

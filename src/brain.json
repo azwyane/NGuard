@@ -1,5 +1,6 @@
 {
-    "OUTPUT_DIR": "brain_output",
-    "HOST_ADDRESS": "192.168.18.10"
+    "OUTPUT_DIR": "predictions",
+    "HOST_ADDRESS": "192.168.18.10",
+    "BRAIN_LOG" : "brain_logs"
 
 }
