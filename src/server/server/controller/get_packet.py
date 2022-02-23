@@ -17,7 +17,7 @@ except Exception as e:
 def get_packet_stream(rows):
 
     dt = datetime.now()
-    filepath = f"{FILE_PATH}{dt.strftime('%Y-%m-%d')}_Flow.csv"  
+    filepath = f"{FILE_PATH}{dt.strftime('%Y-%m-%d')}/{dt.strftime('%Y-%m-%d')}_Flow1.csv"  
 
     num_lines = sum(1 for line in open(filepath))
 
@@ -38,7 +38,7 @@ def get_packet_header():
 def get_packet_count(rows=1):
     dt = datetime.now()
     time="23:42:34"
-    filepath = FILE_PATH + dt.strftime("%Y-%m-%d") + "_count_Flow.csv"
+    filepath = f"{FILE_PATH}{dt.strftime('%Y-%m-%d')}/{dt.strftime('%Y-%m-%d')}_count_Flow1.csv"
     num_lines = sum(1 for line in open(filepath)) - rows
     csv_file = pd.DataFrame(pd.read_csv(filepath, sep=",", header=0, index_col=False,skiprows=range(1,num_lines)))
     packets = csv_file.to_json(orient="records", date_format="epoch", double_precision=10, force_ascii=True,
