@@ -57,7 +57,7 @@ while True:
 
             else:
                 click.clear()
-                # warning.warning("IDS mode on")
+                # warning.warning("IPS mode off")
             
         except KeyboardInterrupt:
             warning.warning("Shutting Down IPS")
