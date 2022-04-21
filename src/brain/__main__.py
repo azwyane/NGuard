@@ -21,31 +21,57 @@ def check_create_folder(folder,output_dir):
 
     return f'{output_dir}/{folder}'
 
+# def analyze_save(csv_to_analyze,save_to):
+#     df = pd.DataFrame()
+#     test_dataframe = pd.read_csv(csv_to_analyze)
+#     test_dataframe.drop_duplicates(subset=['Flow ID'],inplace=True)
+#     # test_dataframe.drop(test_dataframe.loc[test_dataframe['Src IP'] == str(HOST_ADDRESS)].index,inplace=True)
+   
+#     if not test_dataframe.empty:
+#         df = test_dataframe[['Src IP', 'Src Port', 'Dst IP','Dst Port','Protocol',
+#                             'Timestamp']].copy()
+#         test_dataframe.drop(['Flow ID', 'Src IP', 'Src Port', 'Dst IP','Dst Port','Protocol',
+#                             'Timestamp','Flow Byts/s', 'Flow Pkts/s','Label'],inplace=True,axis=1)
+#         predictions= bclf.predict(bpca.transform(bscaler.transform(test_dataframe.values)))
+
+#         df['B/A'] = predictions
+#         for clf_feature,clf in zip(features,clf_s):
+#             y_p = clf.predict(test_dataframe[features[clf_feature]].values)
+#             df[clf_feature.replace("_feature","")] = predictions
+        
+#         for c,s,p,name in zip(clfs,scls,pcas,attack_names):
+#             y_p = c.predict(p.transform(s.transform(test_dataframe.values)))
+#             df[f'{name}PCA'] = y_p
+#         df['avg'] = np.prod(df[['B/A','dos','ddos','portscan','patator','web','dosPCA','ddosPCA','portscanPCA','patatorPCA','webPCA']].values,axis=1)
+#         df.to_csv(f'{save_to}/{csv_to_analyze.split("/")[::-1][0]}',index=False)
+#     else:
+#         logger.info("No incoming connections")
+
 def analyze_save(csv_to_analyze,save_to):
     df = pd.DataFrame()
     test_dataframe = pd.read_csv(csv_to_analyze)
     test_dataframe.drop_duplicates(subset=['Flow ID'],inplace=True)
     # test_dataframe.drop(test_dataframe.loc[test_dataframe['Src IP'] == str(HOST_ADDRESS)].index,inplace=True)
-   
+    
     if not test_dataframe.empty:
         df = test_dataframe[['Src IP', 'Src Port', 'Dst IP','Dst Port','Protocol',
                             'Timestamp']].copy()
         test_dataframe.drop(['Flow ID', 'Src IP', 'Src Port', 'Dst IP','Dst Port','Protocol',
                             'Timestamp','Flow Byts/s', 'Flow Pkts/s','Label'],inplace=True,axis=1)
         predictions= bclf.predict(bpca.transform(bscaler.transform(test_dataframe.values)))
-
-        df['B/A'] = predictions
-        for clf_feature,clf in zip(features,clf_s):
-            y_p = clf.predict(test_dataframe[features[clf_feature]].values)
-            df[clf_feature.replace("_feature","")] = predictions
         
-        for c,s,p,name in zip(clfs,scls,pcas,attack_names):
-            y_p = c.predict(p.transform(s.transform(test_dataframe.values)))
-            df[f'{name}PCA'] = y_p
-        df['avg'] = np.prod(df[['B/A','dos','ddos','portscan','patator','web','dosPCA','ddosPCA','portscanPCA','patatorPCA','webPCA']].values,axis=1)
+        df['B/A'] = predictions
+        
+        if not df.loc[df['B/A']==0].empty:
+            for c,s,p,name in zip(clfs,scls,pcas,attack_names):
+                y_p = c.predict(p.transform(s.transform(df.loc[df['B/A']==0].values)))
+                df.loc[df['B/A']==0][f'{name}'] = y_p
+            
         df.to_csv(f'{save_to}/{csv_to_analyze.split("/")[::-1][0]}',index=False)
+        
     else:
         logger.info("No incoming connections")
+        
  
 def signal_to_server(csv_to_analyze):
   
@@ -129,10 +155,17 @@ if __name__ == '__main__':
     patatorpca = load(f'{MULTI_CLF_PATH}withpca/patatorpca')
     webpca = load(f'{MULTI_CLF_PATH}withpca/webpca')
 
-    clfs = [dos,ddos,portscan,patator,web]
-    scls = [dosscl,ddosscl,portscanscl,patatorscl,webscl]
-    pcas = [dospca,ddospca,portscanpca,patatorpca,webpca]
-    attack_names = ['dos','ddos','portscan','patator','web']
+    # clfs = [dos,ddos,portscan,patator,web]
+    # scls = [dosscl,ddosscl,portscanscl,patatorscl,webscl]
+    # pcas = [dospca,ddospca,portscanpca,patatorpca,webpca]
+    # attack_names = ['dos','ddos','portscan','patator','web']
+
+
+    clfs = [dos,ddos,portscan]
+    scls = [dosscl,ddosscl,portscanscl]
+    pcas = [dospca,ddospca,portscanpca]
+    attack_names = ['dos','ddos','portscan']
+
 
 
     features = {
@@ -172,6 +205,7 @@ if __name__ == '__main__':
                     last_date = datetime.now().strftime("%Y-%m-%d")
                     logger.info('========New Day LOG=======')
             except Exception as e:
+               
                 sleep(2)
         except KeyboardInterrupt:
             logger.info("Shutting Down Brain")

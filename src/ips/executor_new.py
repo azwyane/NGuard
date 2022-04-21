@@ -45,7 +45,7 @@ def list_rules():
             if tcr['rule']['chain'] == 'NGUARD':
                 nguard_rules.append(rule)
     return {'nguard_rules':nguard_rules}
-]
+
 
 def flush_NGUARD_chain():
     rc,output,err = nft.cmd("flush chain ip filter NGUARD")
