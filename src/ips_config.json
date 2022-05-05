@@ -1,4 +1,4 @@
-{   "mode": "IDS", 
+{   "mode": "IPS", 
     "network":{
       "NETWORK_MODE": "HOST", 
       "HOST" : "",
@@ -13,5 +13,6 @@
     },
     "interface": "wlan0",
     "exclude_ip": [],
-    "logpath" : "ips_logs"
+    "logpath" : "ips_logs",
+    "block_port_ip_network":"ip-port"
 }
