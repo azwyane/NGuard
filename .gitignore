@@ -27,3 +27,4 @@ src/data/daily/*
 src/predictions/*
 src/logs/*
 src/brain_logs
+src/sniff/*
