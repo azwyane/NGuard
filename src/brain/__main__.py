@@ -68,7 +68,7 @@ def analyze_save(csv_to_analyze,save_to):
            
            #formatting the dtypes 
             dtyped = get_changed_dtype(dataframe=test_dataframe)
-            test_dataframe.astype(dtyped)
+            test_dataframe = test_dataframe.astype(dtyped)
            
             predictions= bclf.predict(bpca.transform(bscaler.transform(test_dataframe.values)))
             
