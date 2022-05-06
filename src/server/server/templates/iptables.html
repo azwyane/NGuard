@@ -30,10 +30,10 @@
 
           <div class="grid">
               <div class="tabs z-10 -mb-px">
-                  <button class="tab tab-lifted  ">Blocked rules</button>
-                  <button class="tab tab-lifted  ">Suspicious rule</button>
-                  <button class="tab tab-lifted tab-active [--tab-bg:hsl(var(--b2))] ">Manual Rule</button>
-                  <div class="tab tab-lifted mr-6 flex-1 cursor-default [--tab-border-color:transparent]"></div>
+                  <button id ="blocked_toggle" class="tab-rule tab tab-lifted tab-active" data-content="blocked" onclick=handleRule(event)>Blocked rules</button>
+                  <button id="suspicious_toggle" class="tab-rule tab tab-lifted" data-content="suspicious" onclick=handleRule(event)>Suspicious rule</button>
+                  <button id="manual_toggle" class="tab-rule tab tab-lifted  [--tab-bg:hsl(var(--b2))] " data-content="exclude" onclick=handleRule(event) >Exclude Rule</button>
+                  <button id="manual_toggle" class="tab-rule tab tab-lifted  [--tab-bg:hsl(var(--b2))] " data-content="manual" onclick=handleRule(event) >Manual Rule</button>
               </div>
               <div class="bg-base-300 relative overflow-x-auto rounded-b-xl rounded-tr-xl">
               <div class="preview border-base-300 bg-base-200  rounded-b-xl rounded-tr-xl border bg-cover bg-top p-4 undefined" style="background-size: 5px 5px">
@@ -43,41 +43,75 @@
 
 
 
-
-          <div class="overflow-x-auto">
-  <table class="table table-compact w-full">
-    <thead>
-      <tr>
-
-        <th></th>
-        <th>Action</th>
-        <th>From</th>
-        <th>To</th>
-        <th>IPv</th>
-        <th>Protocol</th>
-        <th>Logging</th>
-      </tr>
-    </thead>
-    <tbody>
-
-    </tbody>
-    <tfoot>
-      <tr>
-          <th></th>
-        <th>Action</th>
-        <th>From</th>
-        <th>To</th>
-        <th>IPv</th>
-        <th>Protocol</th>
-        <th>Logging</th>
-      </tr>
-    </tfoot>
-  </table>
-</div>
-
-
-
-
+                <div id="blocked" class="tab-content overflow-x-auto">
+                  <table class="table table-compact w-full">
+                    <thead>
+                      <tr>
+                        <th>Action</th>
+                        <th>From</th>
+                        <th>Src Port</th>
+                        <th>To</th>
+                        <th>Dst port</th>
+                      </tr>
+                    </thead>
+                    <tbody id="blocked-rule-body">
+                      
+                    </tbody>
+                  </table>
+                </div>
+        
+                <div id="suspicious"class="tab-content overflow-x-auto hidden">
+                  <table class="table table-compact w-full">
+                    <thead>
+                      <tr>
+                        <th>Action</th>
+                        <th>From</th>
+                        <th>Src Port</th>
+                        <th>To</th>
+                        <th>Dst port</th>
+                      </tr>
+                    </thead>
+                    <tbody id="suspicious-rule-body">
+                
+                    </tbody>
+                  </table>
+                </div>
+                <div id="manual"class="hidden tab-content overflow-x-auto">
+                  <table class="table table-compact w-full">
+                    <thead>
+                      <tr>
+                
+                        <th></th>
+                        <th>Action</th>
+                        <th>From</th>
+                        <th>To</th>
+                        <th>IPv</th>
+                        <th>Protocol</th>
+                        <th>Logging</th>
+                      </tr>
+                    </thead>
+                    <tbody id="manual-rule-body">
+                
+                    </tbody>
+                  </table>
+                </div>
+                <div id="exclude"class=" tab-content overflow-x-auto hidden">
+                  <table class="table table-compact w-full">
+                    <thead>
+                      <tr>
+                        <th>Action</th>
+                        <th>From</th>
+                        <th>Src Port</th>
+                        <th>To</th>
+                        <th>Dst port</th>
+                      </tr>
+                    </thead>
+                    <tbody id="exclude-rule-body">
+                
+                    </tbody>
+                  </table>
+                </div>
+                
 
 
 
@@ -215,7 +249,54 @@
 
 
 
+<script>
+    var tab=document.getElementsByClassName("tab-rule")
+    function handleRule(event){
+      button_toggled=event.target.id
+      for(i=0; i<tab.length; i++){
+        tab[i].classList.remove("tab-active")
+      }
+      event.target.classList.add("tab-active")
+      let content=document.getElementsByClassName("tab-content")
+      for(i=0; i<content.length; i++){
+        content[i].classList.remove("hidden")
+        content[i].classList.add("hidden")
+      }
+      visibleContent=event.target.dataset.content;
+      content=document.getElementById(visibleContent)
+      content.classList.remove("hidden");
+    getRules(visibleContent).then((data)=>updateContent(data,visibleContent))
+    }
 
+    function updateContent(data,visibleContent){
+
+            let action=data[0].action
+            let ipv=data[0].ipv
+            let protocol=data[0].protocol
+            rules=data[0].rules
+            let header=['sip', 'sport', 'dip', 'dport']
+            parent=document.getElementById(`${visibleContent}-rule-body`)
+            document.getElementById(`${visibleContent}-rule-body`).innerHTML=""
+            for(i=0; i<rules.length; i++){
+            $(`#${visibleContent}-rule-body`).append(`
+                     <tr class="text-gray-500">
+                      <td class="border-t-0 px-4 align-middle text-sm font-normal whitespace-nowrap p-4 text-left">${action}</td>
+                                ${header.map(item=>(` <td class="border-t-0 px-4 align-middle text-sm font-normal whitespace-nowrap p-4 text-left">${rules[i][item]}</td>`))}
+                               </tr>
+
+                     `)
+                              }
+
+    }
+
+    async function getRules(visibleContent){
+      data=await fetch(`/iptables/rules/${visibleContent}`)
+      .then(response =>{return response.json()})
+      .then(data =>data).catch((error)=>console.error(error))
+      return data
+    }
+    $(window).on("load",()=>{getRules("blocked").then(data=>updateContent(data,"blocked"));})
+</script>
 
 
 

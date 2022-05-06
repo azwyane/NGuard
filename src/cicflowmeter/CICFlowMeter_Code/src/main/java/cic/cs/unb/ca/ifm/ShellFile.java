@@ -46,8 +46,8 @@ public class ShellFile {
     private static int packetCounter=1;
     private static String directory="";
     private static ExecutorService csvWriterThread;
-    
-    
+
+
     private static void init() {
         csvWriterThread = Executors.newSingleThreadExecutor();
     }
@@ -55,9 +55,9 @@ public class ShellFile {
     public void destory() {
         csvWriterThread.shutdown();
     }
-    
+
     public static void main(String[] args) throws IOException, InterruptedException {
-       
+
         long flowTimeout = 120000000L;
         long activityTimeout = 5000000L;
         String rootPath = System.getProperty("user.dir");
@@ -67,7 +67,7 @@ public class ShellFile {
 
         directory=sb.toString();
         init();
-      
+
 
         if (args.length < 1) {
             logger.info("Please select interface");
@@ -89,16 +89,16 @@ public class ShellFile {
         directory=outPath+LocalDate.now().toString()+FILE_SEP;
         }
         System.out.println(directory);
-        
+
         File file =new File(directory);
         try
         {
         	if(!file.isDirectory())
         	{
         		file.mkdirs();
-     
+
         	}
-        	
+
         }
         catch (Exception e)
         {
@@ -202,7 +202,7 @@ public class ShellFile {
 
 
     private static void generatePcap( String iface,int counter,String outPath) throws IOException, InterruptedException {
-        
+
         String todayFile = LocalDate.now().toString() + FlowMgr.FLOW_SUFFIX;
         String pcapFileName=outPath+"traffic"+counter+".pcap";
  //       String[] arg={sb.toString()+"traffic"+String.valueOf(pcapFileCounter)+".pcap",sb.toString()};
@@ -238,7 +238,7 @@ public class ShellFile {
         long lines = SwingUtils.countLines(saveFileFullPath.getPath());
         count= (int) lines;
 
-      
+
         File saveCsvFileFullPath = new File(outPath+fileName+FlowMgr.FLOW_SUFFIX+csvCounter+FlowMgr.CSV_SUFFIX);
         long csvLines = SwingUtils.countLines(saveCsvFileFullPath.getPath());
 //        if(csvLines >=100) {
@@ -286,13 +286,15 @@ public class ShellFile {
         String count_header = "count";
         int average=nValid/10;
         for(int l=0; l<=15; l++) {
-        	
+
         	int rand=(int) (Math.random() * (5));
         	int count=average;
-        	
+
             if(l%2==0)
             {
-            	count=(count>average)?average-rand:average;
+            	if(average>=rand+1) {
+            		count=average-rand;
+            	}
             }
             else{
             	count=average+rand;

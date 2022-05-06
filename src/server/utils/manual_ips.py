@@ -15,10 +15,11 @@ except FileNotFoundError as e:
 
 cwd = os.getcwd()
 PROJECT_PATH = f"{cwd}/{config['manual_ips']['PROJECT_PATH']}"
-if not os.path.isdir(PROJECT_PATH):
-        os.makedirs(PROJECT_PATH)
+# if not os.path.isdir(PROJECT_PATH) or not os.path.isfile(PROJECT_PATH):
+#         os.makedirs(PROJECT_PATH)
 
 DEFAULT_IFACE = config['system']['INTERFACE']
+
 
 
 def allow_disallow(sip, sport, dip, dport,proto,hash_val,policy,iface=DEFAULT_IFACE):

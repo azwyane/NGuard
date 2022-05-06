@@ -10,6 +10,6 @@
  "NOTIFICATION_EMAIL-LIST": []
  },
  "manual_ips":{
-   "PROJECT_PATH" : "manual_policy"
+   "PROJECT_PATH" : "manual_policy/"
  }
 }
