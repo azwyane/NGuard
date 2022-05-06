@@ -14,6 +14,36 @@ import urllib3
 import click
 
 
+
+def get_changed_dtype(dataframe):
+    dc = dict()
+    dtypes = [
+        'int64','int64','int64','int64','int64','int64','int64',
+        'float64','float64', 
+        'int64','int64',
+        'float64','float64','float64','float64',
+        'int64','int64','int64',
+        'float64','float64',
+        'int64','int64','int64',
+        'float64','float64',
+        'int64','int64','int64','int64','int64','int64','int64','int64',
+        'float64','float64',
+        'int64','int64',
+        'float64','float64','float64',
+        'int64','int64','int64','int64','int64','int64','int64','int64','int64',
+        'float64','float64','float64',
+        'int64','int64','int64','int64','int64','int64','int64','int64','int64','int64','int64','int64','int64','int64',
+        'float64','float64',
+        'int64','int64',
+        'float64','float64',
+        'int64','int64'
+    ]
+    columns = dataframe.columns
+    for c,d in zip(columns,dtypes):
+        dc[c]=d
+    
+    return dc
+
 def check_create_folder(folder,output_dir):
     if not os.path.isdir(f'{output_dir}/{folder}'):
         os.makedirs(f'{output_dir}/{folder}')
@@ -35,6 +65,11 @@ def analyze_save(csv_to_analyze,save_to):
                                 'Timestamp']].copy()
             test_dataframe.drop(['Flow ID', 'Src IP', 'Src Port', 'Dst IP','Dst Port','Protocol',
                                 'Timestamp','Flow Byts/s', 'Flow Pkts/s','Label'],inplace=True,axis=1)
+           
+           #formatting the dtypes 
+            dtyped = get_changed_dtype(dataframe=test_dataframe)
+            test_dataframe = test_dataframe.astype(dtyped)
+           
             predictions= bclf.predict(bpca.transform(bscaler.transform(test_dataframe.values)))
             
             df['B/A'] = predictions
