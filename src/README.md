@@ -25,3 +25,49 @@ note:run cicflowmeter as root
      ./gradlew shell -PappArgs='["-i","wlp2s0","tcpdump"]'
 
 
+# Procedure to run NGuard
+
+- step 1: goto folder NGuard/src
+
+### Run sensor
+> requirements include libpcap installed
+- step 2: execute the below as:
+```
+$ sudo ./run-flowmeter.sh
+``` 
+### Run brain
+> pip install -r requirements.txt
+- step 3: execute as:
+```
+$ ./run-brain.sh
+```
+
+### Run ips
+> need to install nftables and python3-nftables
+- step 4: execute as:
+```
+$ ./run-ips.sh
+```
+
+### Finally run the web server
+- step 5: execute as:
+```
+$ ./run-server.sh
+```
+
+
+### Some configs that needs edit as per the requirements
+- brain_config.json
+- server_config.json
+- ips_config.json
+
+
+### Logs
+- logs (flowmeter logs)
+- brain_logs(default logs for brain)
+- ips_logs(default logs for ips)
+
+
+
+
+
