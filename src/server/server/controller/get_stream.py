@@ -64,7 +64,7 @@ def get_packet_count(rows=15):
     dt = datetime.now()
     counter=1
     try:
-        dir_list = os.listdir(FILE_PATH)
+        dir_list = os.listdir(f"{FILE_PATH}{dt.strftime('%Y-%m-%d')}")
         file_initials=dt.strftime('%Y-%m-%d')
         for dir in dir_list:
             if(file_initials+"_Flow" in dir):
