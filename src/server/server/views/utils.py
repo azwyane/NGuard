@@ -93,7 +93,6 @@ def handle_manual_rule(data):
         iface=data["iface"]
     else :
         iface=""
-    
     try:
         if(sip!="" and sport!="" and dport!="" ):
             with open(os.getcwd().replace('/server','') + '/server_config.json') as f:
@@ -105,7 +104,7 @@ def handle_manual_rule(data):
                 manual_rule.append({"sip":str(sip),"sport":str(sport),"dip":str(dip),"dport":str(dport),"action":policy,"protocol":protocol,"ipv":ipv})
                 config["manual"]=manual_rule
                 config["req"]=True
-                print("or here")
+                print("or here") 
                 try:
                     with open(FILE_PATH,'w') as f:
                         json.dump(config, f)

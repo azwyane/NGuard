@@ -46,7 +46,6 @@ def addrules():
     if request.method == 'POST':
         result=handle_manual_rule(request.json)
         if result=="success":
-            
             return Response({"status":"success","message":"manual rule added"},status=200)
         elif result=="duplicate":
             return Response({"status":"failed","message":"rule duplicate"},status=201)
