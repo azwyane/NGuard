@@ -1,18 +1,1 @@
-{   "mode": "IDS", 
-    "network":{
-      "NETWORK_MODE": "HOST", 
-      "HOST" : "",
-      "NETWORK" : ""
-    },
-    "actions":{
-    "DOS": "DROP",
-    "DDOS": "DROP",
-    "PORTSCAN": "DROP",
-    "PATATOR": "DROP",
-    "WEBATTACK": "DROP"
-    },
-    "interface": "wlan0",
-    "exclude_ip": [],
-    "logpath" : "ips_logs",
-    "block_port_ip_network":"ip-port"
-}
+{"mode": "IDS", "network": {"NETWORK_MODE": "HOST", "HOST": "", "NETWORK": ""}, "actions": {"DOS": "DROP", "DDOS": "DROP", "PORTSCAN": "DROP", "PATATOR": "DROP", "WEBATTACK": "DROP"}, "interface": "wlan0", "exclude_ip": [], "logpath": "ips_logs", "block_port_ip_network": "ip-port"}
