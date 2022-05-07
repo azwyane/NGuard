@@ -22,9 +22,23 @@
 </head>
 <body>
 
+<style>
 
 
+.show {
+   opacity: 1;
+ }
+ .hide {
+   opacity: 0;
+   transition: opacity 400ms;
+ }
+ 
+ 
+</style>
 
+<div id="toast-place" class="absolute inset-x-0 w-full right-0 top-2 z-10 flex flex-col justify-start items-center gap-2">
+
+</div>
 
 
    <div class=" lg:hidden navbar bg-base-100">
@@ -198,6 +212,18 @@
   </div>
   
 </div>
+
+
+<script>
+   document.getElementById( 'toast-place' ).addEventListener( 'DOMNodeInserted', function ( event ) {
+   if( event.target.parentNode.id === 'toast-place' ) {
+      setTimeout(()=>{
+         parent=document.getElementById( 'toast-place' );
+         if(parent.children.lenght>0)parent.children[0].remove()},100)
+       //direct descendant        
+   };
+}, false );
+</script>
 
 </body>
 </html>

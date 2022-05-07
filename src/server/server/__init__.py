@@ -4,6 +4,7 @@ app = Flask(__name__)
 
 import server.views.ui
 import server.views.streams
+import server.views.request
 
 
 
@@ -14,4 +15,3 @@ def shutdown():
 
 import atexit
 atexit.register(shutdown)
-

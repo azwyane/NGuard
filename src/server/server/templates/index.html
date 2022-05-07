@@ -21,8 +21,8 @@
                    <div class="bg-white rounded-lg p-4 sm:p-6 xl:p-8  2xl:col-span-2">
                     <div id="chart"></div>
                    </div>
-                   <div class="bg-white rounded-lg p-4 sm:p-6 xl:p-8 ">
-                      <div class="mb-4 flex items-center justify-between">
+                   <div class="hidden lg:block bg-white rounded-lg p-4 sm:p-6 xl:p-8 ">
+                      <div class=" mb-4 flex items-center justify-between">
                          <div>
                             <h3 class="text-xl font-semibold text-gray-900 mb-2">Recent Alerts</h3>
 
@@ -74,10 +74,12 @@
         <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
         <script>
+           var packets=[]
             $(document).ready(function () {
                var normalCount=[]
-               var anomaluscount= []
+               var anomalusCount= []
                var timestamp = []
+               
 
             var options = {
                   series: [    ],
@@ -105,34 +107,54 @@
                 var chart = new ApexCharts(document.querySelector("#chart"), options);
                 chart.render();
                 var header=['Src IP', 'Src Port', 'Dst IP', 'Dst Port', 'Protocol', 'Timestamp']
-
-
-
                 const source = new EventSource("/packets/stream");
                 source.onmessage = function (event) {
                    $("#packet-table-body").empty();
-                    const data = JSON.parse(event.data);
+                    const data = JSON.parse(event.data)
+                    
+                  if(data.packets && JSON.parse(data.packets).length>0){
+                     flows=JSON.parse(data.packets)
+                     
+                     flows.map(flow=>{
+                        if(packets.length>0){
+                        for(i=0; i<packets.length; i++){
+                           if(flow["Flow ID"]!=packets[i]["Flow ID"])
+                           {
+                                 if(packets.length>=10)
+                                 {
+                                    packets.shift()
+                                 }
+                                 packets.push(flow)
+                           }
+                           else{
+                           }
+                        }
+                     }
+                     else{
+                        packets.push(flow)
+                     }
+                     })
 
-                  JSON.parse(data.packets).map((packet)=>{
+               
 
-                     $("#packet-table-body").append(`
+            }   
+              if(packets.length>0){
+               packets.map(packet=>{$("#packet-table-body").append(`
                      <tr class="text-gray-500">
                                 ${header.map(item=>(` <td class="border-t-0 px-4 align-middle text-sm font-normal whitespace-nowrap p-4 text-left">${packet[item]}</td>`))}
-
-
                                </tr>
-
-
-                     `)
-               })
+                     `)});
+              }
                   if(data.counts){
+                     normalCount.push(data.counts["count"])
+                     timestamp.push(data.time)
+                     anomalusCount.push(0)
 
-                     normalCount.push(data.counts[0]["count"])
-                     timestamp.push(data.counts[0]["time"])
-                     if(normalCount.length>=6)
+                     if(normalCount.length>=8)
                      {
                         timestamp.shift()
                         normalCount.shift()
+                        anomalusCount.shift()
                      }
 
                      chart.updateOptions({series:[{
@@ -140,7 +162,7 @@
                   data: normalCount
                 }, {
                   name: 'Anomalus packet',
-                  data: anomaluscount
+                  data: anomalusCount
                 }],xaxis:{
                    type:'datetime',
                    categories:timestamp
@@ -151,6 +173,7 @@
 
 
                 }
+
 
 
 
