@@ -5,26 +5,36 @@ import pandas as pd
 import json
 import sys
 
+
 CWD =os.getcwd()
 try:
     with open(CWD.replace('/server','') + '/brain_config.json') as f:
         config = json.load(f)
         FILE_PATH = f"{CWD.replace('/server','')}/{config['OUTPUT_DIR']}/"
+        BRAIN_LOG_PATH=f"{CWD.replace('/server','')}/{config['BRAIN_LOG']}"
+    with open(CWD.replace('/server','') + '/server_config.json') as f:
+        config=json.load(f)
+        FLOW_PATH=config['flow_path']
+    with open(CWD.replace('/server','') + '/ips_config.json') as f:
+        config=json.load(f)
+        IPS_LOG_PATH=f"{CWD.replace('/server','')}/{config['logpath']}"
 except Exception as e:
     print(e)
     sys.exit()
 
+
 def get_packet_stream(rows):
 
     dt = datetime.now()
-    filepath = f"{FILE_PATH}{dt.strftime('%Y-%m-%d')}/{dt.strftime('%Y-%m-%d')}_Flow1.csv"  
-
+    filepath = f"{FILE_PATH}{dt.strftime('%Y-%m-%d')}/{dt.strftime('%Y-%m-%d')}_Flow1.csv"
+    
     num_lines = sum(1 for line in open(filepath))
-
+    
     num_lines = sum(1 for line in open(filepath)) - rows
     csv_file = pd.DataFrame(pd.read_csv(filepath, sep=",", header=0, index_col=False, skiprows=range(1, num_lines)))
     packets = csv_file.to_json(orient="records", date_format="epoch", double_precision=10, force_ascii=True,
                      date_unit="ms", default_handler=None)
+    packets=[]
     return packets
 
 
@@ -38,7 +48,9 @@ def get_packet_header():
 def get_packet_count(rows=1):
     dt = datetime.now()
     time="23:42:34"
-    filepath = f"{FILE_PATH}{dt.strftime('%Y-%m-%d')}/{dt.strftime('%Y-%m-%d')}_count_Flow1.csv"
+    packet=1
+    count_directory="sniff"
+    packet_path = f"{FLOW_PATH}{dt.strftime('%Y-%m-%d')}/{dt.strftime('%Y-%m-%d')}_count_Flow.csv"
     num_lines = sum(1 for line in open(filepath)) - rows
     csv_file = pd.DataFrame(pd.read_csv(filepath, sep=",", header=0, index_col=False,skiprows=range(1,num_lines)))
     packets = csv_file.to_json(orient="records", date_format="epoch", double_precision=10, force_ascii=True,
@@ -47,7 +59,45 @@ def get_packet_count(rows=1):
     return packet
 
 
+def tail(f, lines=1, _buffer=4098):
+    """Tail a file and get X lines from the end"""
+    # place holder for the lines found
+    lines_found = []
+    # block counter will be multiplied by buffer
+    # to get the block size from the end
+    block_counter = -1
 
+    # loop until we find X lines
+    while len(lines_found) <= lines:
+        try:
+            f.seek(block_counter * _buffer, os.SEEK_END)
+        except IOError:  # either file is too small, or too many lines requested
+            f.seek(0)
+            lines_found = f.readlines()
+            break
 
-if __name__=="__main__":
-    get_packet_count()
+        lines_found = f.readlines()
+        # we found enough lines, get out
+        # Removed this line because it was redundant the while will catch
+        # it, I left it for history
+        # if len(lines_found) > lines:
+        #    break
+
+        # decrement the block counter to get the
+        # next X bytes
+        block_counter -= 1
+    return lines_found[-lines:]
+
+def get_logs_stream(count=10):
+    dt = datetime.now()
+    try:
+        with open(BRAIN_LOG_PATH) as f:
+            brain_logs=taile(f,lines=count)
+    except:
+        brain_logs=[]
+    try:
+        with open(IPS_LOG_PATH) as f:
+            ips_logs=tail(f,lines=count)
+    except:
+        ips_logs=[]
+    return {'brain_logs':brain_logs,'ips_logs':ips_logs}

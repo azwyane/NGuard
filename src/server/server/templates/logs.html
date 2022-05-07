@@ -18,8 +18,9 @@
            </div>
 
 
-              <div class="bg-base-300 relative overflow-x-auto rounded-lg rounded-lg">
-              <div class="preview border-base-300 bg-base-200  rounded-lg rounded-lg border bg-cover bg-top p-4 undefined" style="background-size: 5px 5px">
+              <div class="bg-base-200 relative overflow-x-auto rounded-lg rounded-lg">
+              <div id="logs-body" class="preview overflow-x-auto  border-base-300 bg-base-200  rounded-lg rounded-lg border bg-cover bg-top p-4 undefined" style="background-size: 5px 5px">
+                
 
               </div>
                  </div>
@@ -34,11 +35,47 @@
 
 
 
+<script>
+    
+
+    $(window).on("load",()=>{
 
 
+    isLogDisplayed=false;
+
+     const source = new EventSource("/logs/stream");
+     source.onmessage = function (event) {
+                  
+                    const data = JSON.parse(event.data);
+                    
+                    
+                  brain_logs=data.logs.brain_logs
+                  if(brain_logs.length>0){
+                    brain_logs.map((log)=>{
+                      console.log(log)
+
+                      $("#logs-body").append(`
+                                      
+                      <p class="border-t-0 px-4 align-middle text-sm font-normal whitespace-nowrap p-4 text-left">${log}</p>`)
+                          
 
 
+                  })}
+                  ips_logs=data.logs.ips_logs
+                  if(ips_logs.length>0){
+                    ips_logs.map((log)=>{
+                      $("#logs-body").append(`
+                                      
+                      <p class="border-t-0 px-4 align-middle text-sm font-normal whitespace-nowrap p-4 text-left">${log}}</p>`)
+                          
+                  })
 
+                  }
+                  
+    }
+  })
+
+</script>
 
 
 

@@ -3,7 +3,8 @@ from flask import Flask
 app = Flask(__name__)
 
 import server.views.ui
-import server.views.packets
+import server.views.streams
+
 
 
 def shutdown():
@@ -13,3 +14,4 @@ def shutdown():
 
 import atexit
 atexit.register(shutdown)
+
