@@ -31,6 +31,7 @@ def get_packet_stream():
     counter=1
     dir_list = os.listdir(FILE_PATH)
     file_initials=dt.strftime('%Y-%m-%d')
+    packets=[]
     try:
         for dir in dir_list:
             if(file_initials+"_Flow" in dir):
@@ -38,8 +39,8 @@ def get_packet_stream():
                 count = int(re.search(r'\d+', file).group())
                 if(count>=counter):
                     counter=count
-        filepath = f"{CWD.replace('/server','')}/Flow.csv"
-        # filepath = f"{FILE_PATH}{dt.strftime('%Y-%m-%d')}_Flow{counter}.csv"
+        # filepath = f"{CWD.replace('/server','')}/Flow.csv"
+        filepath = f"{FILE_PATH}{dt.strftime('%Y-%m-%d')}_Flow{counter}.csv"
         if pathlib.Path(filepath).is_file() and os.stat(filepath).st_size != 0:
             df = pd.read_csv(filepath)
             packets=df.to_json(orient="records", date_format="epoch", double_precision=10, force_ascii=True,date_unit="ms", default_handler=None)
