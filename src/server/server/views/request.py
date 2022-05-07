@@ -3,9 +3,6 @@ from flask import render_template, request, Response, jsonify
 from utils import manual_ips
 import json
 from server.views.utils import get_rules, get_action,handle_manual_rule,handle_update_request
-from plyer import notification
-
-
 
 @app.route('/iptables/rules/blocked')
 def blocked_rules():
