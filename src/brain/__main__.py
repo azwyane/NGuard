@@ -54,35 +54,43 @@ def check_create_folder(folder,output_dir):
 
 def analyze_save(csv_to_analyze,save_to):
     
-    if os.stat(csv_to_analyze).st_size != 0:
-        df = pd.DataFrame()
+    if os.path.getsize(csv_to_analyze) > 0:
+        
         test_dataframe = pd.read_csv(csv_to_analyze)
         test_dataframe.drop_duplicates(subset=['Flow ID'],inplace=True)
         # test_dataframe.drop(test_dataframe.loc[test_dataframe['Src IP'] == str(HOST_ADDRESS)].index,inplace=True)
         
-        if not test_dataframe.empty:
-            df = test_dataframe[['Src IP', 'Src Port', 'Dst IP','Dst Port','Protocol',
-                                'Timestamp']].copy()
-            test_dataframe.drop(['Flow ID', 'Src IP', 'Src Port', 'Dst IP','Dst Port','Protocol',
-                                'Timestamp','Flow Byts/s', 'Flow Pkts/s','Label'],inplace=True,axis=1)
-           
-           #formatting the dtypes 
-            dtyped = get_changed_dtype(dataframe=test_dataframe)
-            test_dataframe = test_dataframe.astype(dtyped)
-           
-            predictions= bclf.predict(bpca.transform(bscaler.transform(test_dataframe.values)))
+        # if not test_dataframe.empty:
+        df = test_dataframe[['Src IP', 'Src Port', 'Dst IP','Dst Port','Protocol',
+                            'Timestamp']].copy()
+        test_dataframe.drop(['Flow ID', 'Src IP', 'Src Port', 'Dst IP','Dst Port','Protocol',
+                            'Timestamp','Flow Byts/s', 'Flow Pkts/s','Label'],inplace=True,axis=1)
+        
+        #formatting the dtypes 
+        dtyped = get_changed_dtype(dataframe=test_dataframe)
+        test_dataframe = test_dataframe.astype(dtyped)
+        
+        
+        predictions= bclf.predict(bpca.transform(bscaler.transform(test_dataframe.values)))
+        
+        df['B/A'] = predictions
+        
+        
+        if not df.loc[df['B/A']==0].empty:
             
-            df['B/A'] = predictions
+            for c,s,p,name in zip(clfs,scls,pcas,attack_names):
+                y_p = c.predict(p.transform(s.transform(test_dataframe.values)))
+                df[name] = y_p
+    
             
-            if not df.loc[df['B/A']==0].empty:
-                for c,s,p,name in zip(clfs,scls,pcas,attack_names):
-                    y_p = c.predict(p.transform(s.transform(df.loc[df['B/A']==0].values)))
-                    df.loc[df['B/A']==0][f'{name}'] = y_p
-                
-            df.to_csv(f'{save_to}/{csv_to_analyze.split("/")[::-1][0]}',index=False)
-            
-        else:
-            logger.info("No incoming connections")
+        df.to_csv(f'{save_to}/{csv_to_analyze.split("/")[::-1][0]}',index=False)
+        
+        
+        # else:
+        #     logger.info("No incoming connections")
+        #     return 
+    
+
         
  
 def signal_to_server(csv_to_analyze):
@@ -113,6 +121,7 @@ if __name__ == '__main__':
         raise Exception("Brain needs a config file: brain.config")
         sys.exit()
     from .brain_logger import logger
+
     OUTPUT_DIR = config.get('OUTPUT_DIR',None)
     HOST_ADDRESS = config.get('HOST_ADDRESS',None)
     LOG_DIR = config.get('BRAIN_LOG',None)
@@ -167,6 +176,7 @@ if __name__ == '__main__':
         date = datetime.now().strftime("%Y-%m-%d")
         date_flow_count = f'{date}_Flow{count}'
         csv_to_analyze = f'{DATA_PATH}{date}/{date_flow_count}.csv'
+        
         
         save_to = check_create_folder(folder=datetime.now().strftime("%Y-%m-%d"),output_dir=OUTPUT_DIR)
         try:

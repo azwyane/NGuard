@@ -1,4 +1,4 @@
-{   "mode": "IPS", 
+{   "mode": "IDS", 
     "network":{
       "NETWORK_MODE": "HOST", 
       "HOST" : "",
