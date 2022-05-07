@@ -1,162 +1,370 @@
-	
+{% extends 'base.html' %} {% block content %}
 
-{% extends 'base.html' %}
+<div class="lg:pt-6 max-w-5xl px-4 static">
+  <h2 class="lg:pt-4 text-2xl leading-none font-bold text-gray-900 mb-10">
+    Rules and Policies
+  </h2>
 
-{% block content %}
+  <!------    Working mode and system related settings ------>
 
+  <div class="bg-white rounded-lg my-2 p-4 sm:p-6 xl:p-8">
+    <h3 class="font-bold text-md">
+      <span class="text-base-300 pr-2">#</span>NGuard System
+    </h3>
 
+    <form id="system" class="flex-col gap-y-8 space-y-2">
+      <div class="flex pt-2 align-base justify-center gap-2">
+        <label
+          for="nguard_mode"
+          class="block text-sm py-1 align-baseline md:text-base font-medium text-gray-800"
+        >
+          NGuard working mode:
+        </label>
+        <select
+          id="nguard_mode"
+          name="nguard_mode"
+          autocomplete="policy"
+          class="mt-1 block w-28 py-1 px-3 border-b border-b-gray-300 bg-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+        >
+          <option value="ids">IDS</option>
+          <option selected value="ips" selected>IPS</option>
+        </select>
+      </div>
+    </form>
+    <button
+      class="block mx-auto flex btn modal-button lowercase btn-ghost bg-base-200 btn-sm gap-2 mt-8"
+      onclick='handleUpdate("system");'
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-4 w-4"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M5 13l4 4L19 7"
+        />
+      </svg>
+      <span class="tex-sm font-semibold">update</span>
+    </button>
+  </div>
 
+  <!------------------------- ---------------------------------------->
 
+  <!------    Desktop notification and email related settings ------>
 
-
-
-<div class="lg:pt-6  max-w-5xl  px-4">
-  <h2 class="lg:pt-4 text-2xl leading-none font-bold text-gray-900 mb-10">Rules and Policies</h2>
-
-
-
-            <!------    Working mode and system related settings ------>
-
-    <div class="bg-white  rounded-lg my-2 p-4 sm:p-6 xl:p-8 ">
-
-        <h3 class="font-bold text-md"><span class="text-base-300 pr-2">#</span>NGuard System</h3>
-
-
-
-
-
-        <form id="system" class="flex-col gap-y-8 space-y-2 ">
-                <div class="  flex pt-2 align-base justify-center gap-2">
-                    <label for="nguard_mode" class="block text-sm py-1 align-baseline md:text-base font-medium  text-gray-800">
-                    NGuard working mode:  </label>
-                     <select id="nguard_mode" name="nguard_mode" autocomplete="policy"
-                     class="mt-1 block w-28 py-1 px-3 border-b border-b-gray-300 bg-white  focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                        <option  value="ids" >IDS</option>
-                         <option selected value="ips" selected>IPS</option>
-                    </select>
-                </div>
-        </form>
-                                  <button class="block mx-auto  flex btn modal-button lowercase btn-ghost bg-base-200   btn-sm gap-2 mt-8 " onclick='handleUpdate("system");'>
-
- <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-</svg>
-  <span class="tex-sm font-semibold">update</span>
-
-</button>
-
+  <div class="bg-white rounded-lg my-2 p-4 mt-4 sm:p-6 xl:p-8">
+    <div class="flex justify-between items-center">
+      <h3 class="font-bold text-md">
+        <span class="text-base-300 pr-2">#</span>Alert and Notifications
+      </h3>
     </div>
 
-        <!------------------------- ---------------------------------------->
+    <form id="notification_email" class="flex-col space-y-2 pt-2">
+      <div class="flex pt-2 align-base justify-center gap-2">
+        <label
+          for="notification"
+          class="block text-sm py-1 md:text-base font-medium text-gray-800"
+        >
+          Desktop Notification for alerts,info and error:
+        </label>
+        <select
+          id="notification"
+          name="policy"
+          autocomplete="policy"
+          class="mt-1 block w-28 py-1 px-3 border-b border-b-gray-300 bg-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+        >
+          <option value="enable">enable</option>
+          <option value="disable">disable</option>
+        </select>
+      </div>
 
+      <div class="flex pt-2 align-base justify-center gap-2">
+        <label
+          for="email"
+          class="block text-sm py-1 md:text-base font-medium text-gray-800"
+        >
+          Send alerts,info and error as email:
+        </label>
+        <select
+          id="email"
+          name="policy"
+          autocomplete="policy"
+          class="mt-1 block w-28 py-1 px-3 border-b border-b-gray-300 bg-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+        >
+          <option value="enable">enable</option>
+          <option value="disable">disable</option>
+        </select>
+      </div>
+    </form>
+    <div id="email-list">
+      <div class="flex items-center justify-between mt-8 lg:mt-4">
+        <h4 class="font-bold text-md">
+          <span class="text-base-300 pr-2">#</span>Email lists
+        </h4>
 
-            <!------    Desktop notification and email related settings ------>
+        <label
+          for="email-modal"
+          class="btn modal-button btn-ghost bg-base-200 btn-sm gap-2"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-4 w-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 4v16m8-8H4"
+            />
+          </svg>
+          <span class="tex-sm font-semibold">add email</span>
+        </label>
+      </div>
+      <div class="mt-4 bg-base-300 relative overflow-x-auto rounded-xl">
+        <div
+          class="preview border-base-300 bg-base-200 rounded-xl border bg-cover bg-top p-4 undefined"
+          style="background-size: 5px 5px"
+        >
+          <table class="table table-compact w-full">
+            <tbody></tbody>
+            <tr>
+              <td>1</td>
 
-    <div class="bg-white  rounded-lg my-2 p-4 mt-4 sm:p-6 xl:p-8 ">
-        <div class="flex justify-between items-center">
-
-        <h3 class="font-bold text-md"><span class="text-base-300 pr-2">#</span>Alert and Notifications</h3>
-
-            </div>
-
-
-
-
-
-        <form id="notification_email" class="flex-col space-y-2 pt-2">
-                <div class="  flex pt-2 align-base justify-center gap-2">
-                    <label for="notification" class="block text-sm py-1 md:text-base font-medium  text-gray-800">
-                    Desktop Notification for alerts,info and error: </label>
-                     <select id="notification" name="policy" autocomplete="policy"
-                     class="mt-1 block w-28 py-1 px-3 border-b border-b-gray-300 bg-white  focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                        <option value="enable" >enable</option>
-                         <option value="disable" >disable</option>
-                    </select>
-                </div>
-
-                <div class="  flex pt-2 align-base justify-center gap-2">
-                    <label for="email" class="block text-sm py-1 md:text-base font-medium  text-gray-800">
-                    Send alerts,info and error as email: </label>
-                     <select id="email" name="policy" autocomplete="policy"
-                     class="mt-1 block w-28 py-1 px-3 border-b border-b-gray-300 bg-white  focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                        <option value="enable" >enable</option>
-                         <option value="disable" >disable</option>
-                    </select>
-                </div>
-        </form>
-<div id="email-list">
-<div class="flex items-center justify-between mt-8 lg:mt-4">
-         <h4 class="font-bold text-md "><span class="text-base-300 pr-2">#</span>Email lists</h4>
-
-        <button class=" btn modal-button btn-ghost bg-base-200  btn-sm gap-2 ">
-
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-</svg>
-  <span class="tex-sm font-semibold lowercase">add email </span>
-
-</button>
-
+              <td></td>
+            </tr>
+            <tr>
+              <td>2</td>
+            </tr>
+          </table>
+        </div>
+      </div>
     </div>
-              <div class="mt-4 bg-base-300 relative overflow-x-auto rounded-xl">
-              <div class="preview border-base-300 bg-base-200  rounded-xl border bg-cover bg-top p-4 undefined" style="background-size: 5px 5px">
 
-  <table class="table table-compact w-full">
+    <button
+      class="block mx-auto flex btn  lowercase btn-ghost bg-base-200 btn-sm gap-2 mt-8" onclick='handleUpdate("notification_email")'
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-4 w-4"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M5 13l4 4L19 7"
+        />
+      </svg>
+      <span class="tex-sm font-semibold">update</span>
+    </button>
+  </div>
 
-    <tbody>
-
-    </tbody>
-<tr>
-    <td>1</td>
-    <td>facebook.com</td>
-    <td></td>
-
-</tr>
-      <tr>
-    <td>2</td>
-    <td>facebook.com</td>
-</tr>
-  </table>
-              </div>
-              </div>
+  <!------------------------- ---------------------------------------->
 </div>
 
 
-             <button class="block mx-auto  flex btn modal-button lowercase btn-ghost bg-base-200   btn-sm gap-2 mt-8 ">
 
- <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-</svg>
-  <span class="tex-sm font-semibold">update</span>
+<input type="checkbox" id="email-modal" class="modal-toggle" />
+<label for="email-modal" class="modal cursor-pointer">
+  <label class="modal-box relative" for="">
+    <h3 class="font-bold text-md">
+      <span class="text-base-300 pr-2">#</span>Add email
+    </h3>
+    <form id="emailForm">
+      <div class="flex-col space-y-2">
+       
+        <div
+          class="whitespace-nowrap pt-2 flex items-center justify-center gap-2"
+        >
+          <label
+            for="sip"
+            class="block text-sm py-1 md:text-base font-medium text-gray-800"
+          >
+            Email Address:
+          </label>
+          <div class="flex gap-2">
+            <input
+              type="email"
+              id="email"
+              name="email"
+              type="text"
+              placeholder="someone@email.com"
+              class=" bg-gray-100 input rounded-sm sm:text-sm w-28 w-full max-w-xs focus:outline-none rounded-none border-0 border-b-1 border-b-gray-500 focus:border-b-primary"
+            />
+          </div>
+        </div>
+      </div>
+      <div
+        id="mbox"
+        class="hidden w-full border border-b-1 border-green-200 rounded-sm text-align-center flex items-center justify-center my-4 px-2 py-2 bg-green-200 bg-opacity-20"
+      ></div>
+      <div class="modal-action">
+        <label for="rule-add-modal" class="btn btn-modal btn-sm btn-accent btn-sm gap-2" onclick="submitEmail()">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-4 w-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 4v16m8-8H4"
+            />
+          </svg>
+          <span
+            id="submit-button"
+            for="rule-add-form"
+            type="submit"
+            class="tex-sm font-semibold"
+            value="submit"
+            >add email</span
+          >
+        </label>
+        <label for="rule-add-modal" class="btn btn-modal btn-sm btn-grey btn-sm gap-2">
+          <span class="tex-sm font-semibold">cancel</span>
+        </label>
+      </div>
+    </form>
+  </label>
+</label>
 
-</button>
-
-    </div>
-
-        <!------------------------- ---------------------------------------->
+<script>
 
 
 
-</div>
+function alrtMessage(message,type){
+  return (` <div id="toast-default"
+		class="flex items-center w-full max-w-xs p-4 text-gray-500 bg-white rounded-lg shadow "
+		role="alert">
+		<div
+			class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 ${(type=="success")?"text-green-500 bg-green-100":((type=="info")?"text-blue-500 bg-blue-100":"text-red-500 bg-red-100")} rounded-lg ">
+			<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+				<path fill-rule="evenodd"
+					d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.214.33-.403.713-.57 1.116-.334.804-.614 1.768-.84 2.734a31.365 31.365 0 00-.613 3.58 2.64 2.64 0 01-.945-1.067c-.328-.68-.398-1.534-.398-2.654A1 1 0 005.05 6.05 6.981 6.981 0 003 11a7 7 0 1011.95-4.95c-.592-.591-.98-.985-1.348-1.467-.363-.476-.724-1.063-1.207-2.03zM12.12 15.12A3 3 0 017 13s.879.5 2.5.5c0-1 .5-4 1.25-4.5.5 1 .786 1.293 1.371 1.879A2.99 2.99 0 0113 13a2.99 2.99 0 01-.879 2.121z"
+					clip-rule="evenodd"></path>
+			</svg>
+		</div>
+		<div class="ml-3 text-sm font-normal">${message}</div>
+		<button type="button" class="ml-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex h-8 w-8  data-collapse-toggle="toast-default" aria-label="Close" onclick="closeAlert(event)" >
+        <span class="sr-only">Close</span>
+        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+    </button>
+	</div>`)
+}
+
+function submitEmail(event){
+
+}
+
+function handleUpdate(formId) {
+
+
+
+
+    if(formId=="system"){
+      let mode = getSelectValue("nguard_mode", "select");
+      data={"update":{"mode":mode},"id":formId}
+      console.log(data)
+      submitForm("system",data)
+    }
+    else if( formId=="notification_email"){
+      let email = getSelectValue("direction", "select");
+      let notification =getSelectValue("notification","select")
+      data={"update":{"email":email,"notification":notification},"id":formId}
+      console.log(data)
+      submitForm("notification_email",data)
+    }
+  }
+
+  function clearTost(){
+    toast_place_holder=document.getElementById("toast-place")
+    for(i=0;i<toast_place_holder.children.length; i++){
+      toast_place_holder.children[i].remove()
+    }
+  }
+
+ function closeAlert(event){
+   event.target.parentNode.parentNode.remove()
+ }
+
+const ruleForm = document.getElementById("ruleForm");
+
+    const submitForm = async (id,data) => {
+      toast_place_holder=document.getElementById("toast-place")
+             $('#toast-place').append(alrtMessage("Updating settings....","info"))
+        console.log(JSON.stringify(data))
+        fetch("/settings/update", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        })
+          .then((res) => {
+            if (res.status == 200) {
+              clearTost()
+              toast_place_holder=document.getElementById("toast-place")
+             $('#toast-place').append(alrtMessage("Settings succesfully updated","success"))
+                
+            }
+            else {
+              clearTost()
+              toast_place_holder=document.getElementById("toast-place")
+             $('#toast-place').append(alrtMessage("Error while updating settings","error"))
+            }
+          }).catch((error) => {
+            clearTost()
+            toast_place_holder=document.getElementById("toast-place")
+             $('#toast-place').append(alrtMessage("Error updating settings","error"))
+          });
+      
+    };
+
+    let getSelectValue = (id, type) => {
+      if (document.getElementById(id)) {
+        if (type == "select") {
+          var parent = document.getElementById(id);
+          var options = parent.options[parent.selectedIndex];
+          return options.value;
+        } else if ((type = "input"));
+        {
+          return document.getElementById(id).value;
+        }
+      }
+      return;
+    };
+  </script>
 
 
 
 
 
 
-    <script type="text/javascript">
-		console.log("hello")
-    function handleUpdate(formId){
-        alert("Sending Json");
-        var form =document.getElementById("settings");
-        var formData = JSON.stringify($(`#${formId}`).serializeArray());
 
-        console.log(formData)
 
-	}
-  
 
- </script>
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -164,44 +372,3 @@
 
 
 {% endblock %}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

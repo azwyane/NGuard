@@ -1,313 +1,500 @@
+{% extends 'base.html' %} {% block content %}
 
-{% extends 'base.html' %}
-
-{% block content %}
-
-
-
-<div class="lg:pt-6  max-w-5xl  px-4">
-  <h2 class="lg:pt-4 text-2xl leading-none font-bold text-gray-900 mb-10">Rules and Policies</h2>
-             <div class="bg-white  rounded-lg my-2 p-4 sm:p-6 xl:p-8 ">
-
-      <div class="component-preview not-prose   max-w-4xl" id="swap-text">
-          <div class="pb-2 text-sm font-bold mb-2 flex items-center justify-between">
-              <div>
-              <a class="opacity-20 hover:opacity-60 text-sm font-semibold lg:text-lg"" >#</a>
-              <span class="text-sm font-semibold lg:text-lg">Rules</span>
-              </div>
-              <label for="rule-add-modal"class=" btn modal-button btn-accent   btn-sm gap-2 ">
-
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-</svg>
-  <span class="tex-sm font-semibold">add rules</span>
-
-</label>
-          </div>
-
-
-
-
-          <div class="grid">
-              <div class="tabs z-10 -mb-px">
-                  <button id ="blocked_toggle" class="tab-rule tab tab-lifted tab-active" data-content="blocked" onclick=handleRule(event)>Blocked rules</button>
-                  <button id="suspicious_toggle" class="tab-rule tab tab-lifted" data-content="suspicious" onclick=handleRule(event)>Suspicious rule</button>
-                  <button id="manual_toggle" class="tab-rule tab tab-lifted  [--tab-bg:hsl(var(--b2))] " data-content="exclude" onclick=handleRule(event) >Exclude Rule</button>
-                  <button id="manual_toggle" class="tab-rule tab tab-lifted  [--tab-bg:hsl(var(--b2))] " data-content="manual" onclick=handleRule(event) >Manual Rule</button>
-              </div>
-              <div class="bg-base-300 relative overflow-x-auto rounded-b-xl rounded-tr-xl">
-              <div class="preview border-base-300 bg-base-200  rounded-b-xl rounded-tr-xl border bg-cover bg-top p-4 undefined" style="background-size: 5px 5px">
-
-
-
-
-
-
-                <div id="blocked" class="tab-content overflow-x-auto">
-                  <table class="table table-compact w-full">
-                    <thead>
-                      <tr>
-                        <th>Action</th>
-                        <th>From</th>
-                        <th>Src Port</th>
-                        <th>To</th>
-                        <th>Dst port</th>
-                      </tr>
-                    </thead>
-                    <tbody id="blocked-rule-body">
-                      
-                    </tbody>
-                  </table>
-                </div>
-        
-                <div id="suspicious"class="tab-content overflow-x-auto hidden">
-                  <table class="table table-compact w-full">
-                    <thead>
-                      <tr>
-                        <th>Action</th>
-                        <th>From</th>
-                        <th>Src Port</th>
-                        <th>To</th>
-                        <th>Dst port</th>
-                      </tr>
-                    </thead>
-                    <tbody id="suspicious-rule-body">
-                
-                    </tbody>
-                  </table>
-                </div>
-                <div id="manual"class="hidden tab-content overflow-x-auto">
-                  <table class="table table-compact w-full">
-                    <thead>
-                      <tr>
-                
-                        <th></th>
-                        <th>Action</th>
-                        <th>From</th>
-                        <th>To</th>
-                        <th>IPv</th>
-                        <th>Protocol</th>
-                        <th>Logging</th>
-                      </tr>
-                    </thead>
-                    <tbody id="manual-rule-body">
-                
-                    </tbody>
-                  </table>
-                </div>
-                <div id="exclude"class=" tab-content overflow-x-auto hidden">
-                  <table class="table table-compact w-full">
-                    <thead>
-                      <tr>
-                        <th>Action</th>
-                        <th>From</th>
-                        <th>Src Port</th>
-                        <th>To</th>
-                        <th>Dst port</th>
-                      </tr>
-                    </thead>
-                    <tbody id="exclude-rule-body">
-                
-                    </tbody>
-                  </table>
-                </div>
-                
-
-
-
-              </div>
-              </div>
-          </div>
+<div class="lg:pt-6 max-w-5xl px-4">
+  <h2 class="lg:pt-4 text-2xl leading-none font-bold text-gray-900 mb-10">
+    Rules and Policies
+  </h2>
+  <div class="bg-white rounded-lg my-2 p-4 sm:p-6 xl:p-8">
+    <div class="component-preview not-prose max-w-4xl" id="swap-text">
+      <div
+        class="pb-2 text-sm font-bold mb-2 flex items-center justify-between"
+      >
+        <div>
+          <a
+            class="opacity-20 hover:opacity-60 text-sm font-semibold lg:text-lg"
+            >#</a
+          >
+          <span class="text-sm font-semibold lg:text-lg">Rules</span>
+        </div>
+        <label
+          for="rule-add-modal"
+          class="btn modal-button btn-accent btn-sm gap-2"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-4 w-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 4v16m8-8H4"
+            />
+          </svg>
+          <span class="tex-sm font-semibold">add rules</span>
+        </label>
       </div>
-         </div>
 
+      <div class="grid">
+        <div class="tabs z-10 -mb-px">
+          <button
+            id="blocked_toggle"
+            class="tab-rule tab tab-lifted tab-active"
+            data-content="blocked"
+            onclick="handleRule(event)"
+          >
+            Blocked rules
+          </button>
+          <button
+            id="suspicious_toggle"
+            class="tab-rule tab tab-lifted"
+            data-content="suspicious"
+            onclick="handleRule(event)"
+          >
+            Suspicious rule
+          </button>
+          <button
+            id="manual_toggle"
+            class="tab-rule tab tab-lifted [--tab-bg:hsl(var(--b2))]"
+            data-content="exclude"
+            onclick="handleRule(event)"
+          >
+            Exclude Rule
+          </button>
+          <button
+            id="manual_toggle"
+            class="tab-rule tab tab-lifted [--tab-bg:hsl(var(--b2))]"
+            data-content="manual"
+            onclick="handleRule(event)"
+          >
+            Manual Rule
+          </button>
+        </div>
+        <div
+          class="bg-base-300 relative overflow-x-auto rounded-b-xl rounded-tr-xl"
+        >
+          <div
+            class="preview border-base-300 bg-base-200 rounded-b-xl rounded-tr-xl border bg-cover bg-top p-4 undefined"
+            style="background-size: 5px 5px"
+          >
+            <div id="blocked" class="tab-content overflow-x-auto">
+              <table class="table table-compact w-full">
+                <thead>
+                  <tr>
+                    <th>Action</th>
+                    <th>From</th>
+                    <th>Src Port</th>
+                    <th>To</th>
+                    <th>Dst port</th>
+                  </tr>
+                </thead>
+                <tbody id="blocked-rule-body"></tbody>
+              </table>
+            </div>
 
-
-
-<input type="checkbox" id="rule-add-modal" class="modal-toggle">
-<div class="modal">
-  <div class="modal-box">
-      <h3 class="font-bold text-md"><span class="text-base-300 pr-2">#</span>Create a new Rule!</h3>
-
-
-       <div class="flex-col space-y-2 ">
-        <div class="  flex pt-2 align-base justify-center gap-2">
-         <label for="policy" class="block text-sm py-1 md:text-base font-medium  text-gray-800">
-            Policy:  </label>
-         <select id="policy" name="policy" autocomplete="policy"
-             class="mt-1 block w-28 py-1 px-3 border-b border-b-gray-300 bg-white  focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-             <option value="allow">Allow</option>
-             <option value="ignore">Ignore</option>
-             <option value="reject">Reject</option>
-         </select>
-     </div>
-           <div class="  whitespace-nowrap pt-2 flex items-center justify-center gap-2">
-      <label for="direction" class="block text-sm py-1 md:text-base font-medium text-gray-800">
-         Direction:
-          </label>
-      <select id="direction" name="direction"
-           class="mt-1 block w-28 py-1 px-3 border-b border-b-gray-300 bg-white  focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-          <option value="incoming">incoming</option>
-          <option value="outgoing">outgoing</option>
-      </select>
-  </div>
-                  <div class="  whitespace-nowrap pt-2 flex items-center justify-center">
-      <label for="ip-version" class="block text-sm py-1 md:text-base font-medium  text-gray-800">
-         IP version:
-          </label>
-      <select id="ip-version" name="ip-version"
-           class="mt-1 block w-28 py-1 px-3 border-b border-b-gray-300 bg-white  focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-          <option value="v4">IPv4</option>
-          <option value="v6">IPv6</option>
-      </select>
-  </div>
-
-
-
-
-
-                             <div class="  whitespace-nowrap pt-2 flex items-center justify-center gap-2">
-      <label for="source" class="block text-sm py-1 md:text-base font-medium text-gray-800">
-         Source:
-          </label>
-                                 <div class="flex gap-2">
-            <input id="source" name="source-ip" type="text" placeholder="0.0.0.0" class="input sm:text-sm w-28 w-full max-w-xs focus:outline-none rounded-none border-0 border-b border-b-gray-100 focus:border-b-primary">
-             <input id="source-port" name="source-port" type="text" placeholder="Any Port" class="input sm:text-sm w-28 w-full max-w-xs focus:outline-none rounded-none border-0 border-b border-b-gray-100 focus:border-b-primary">
-
-                                 </div></div>
-
-
-
-                  <div class="  whitespace-nowrap pt-2 flex items-center justify-center gap-2">
-      <label for="destination" class="block text-sm py-1 md:text-base font-medium text-gray-800">
-         Destination:
-          </label>
-                                 <div class="flex gap-2">
-            <input id="destination" name="source-ip" type="text" placeholder="0.0.0.0" class="input sm:text-sm w-28 w-full max-w-xs focus:outline-none rounded-none border-0 border-b border-b-gray-100 focus:border-b-primary">
-             <input id="destination-port" name="source-port" type="text" placeholder="Any Port" class="input sm:text-sm w-28 w-full max-w-xs focus:outline-none rounded-none border-0 border-b border-b-gray-100 focus:border-b-primary">
-
-                                 </div></div>
-
-
-                  <div class="  whitespace-nowrap pt-2 flex items-center justify-center gap-2">
-      <label for="protocol" class="block text-sm py-1 md:text-base font-medium  text-gray-800">
-         Protocol:
-          </label>
-      <select id="protocol" name="ip-version"
-           class="mt-1 block w-28 py-1 px-3 border-b border-b-gray-300 bg-white  focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-          <option value="any">Any</option>
-          <option value="udp">UDP</option>
-          <option value="tcp">TCP</option>
-      </select>
-  </div>
-
-
-
-
-
-
-
-                             <div class="  whitespace-nowrap pt-2 flex items-center justify-center gap-2">
-      <label for="interface" class="block text-sm py-1 md:text-base font-medium  text-gray-800">
-         Interface:
-          </label>
-      <select id="interface" name="interface"
-           class="mt-1 block w-28 py-1 px-3 border-b border-b-gray-300 bg-white  focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-          <option value="Wlp2s0">Wlp2s0</option>
-          <option value="enp3s0">enp3s0</option>
-          <option value="loop">loop</option>
-      </select>
-  </div>
-
-
-
-
-
-
-
-
-</div>
-
-
-
-
-    <div class="modal-action">
-                <label for="rule-add-modal"class=" btn btn-md btn-accent   btn-sm gap-2 ">
-
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-</svg>
-  <span class="tex-sm font-semibold">add rule</span>
-
-</label>
-
+            <div id="suspicious" class="tab-content overflow-x-auto hidden">
+              <table class="table table-compact w-full">
+                <thead>
+                  <tr>
+                    <th>Action</th>
+                    <th>From</th>
+                    <th>Src Port</th>
+                    <th>To</th>
+                    <th>Dst port</th>
+                  </tr>
+                </thead>
+                <tbody id="suspicious-rule-body"></tbody>
+              </table>
+            </div>
+            <div id="manual" class="hidden tab-content overflow-x-auto">
+              <table class="table table-compact w-full">
+                <thead>
+                  <tr>
+                    <th>Action</th>
+                    <th>From</th>
+                    <th>Src Port</th>
+                    <th>To</th>
+                    <th>Dst port</th>
+                  </tr>
+                </thead>
+                <tbody id="manual-rule-body"></tbody>
+              </table>
+            </div>
+            <div id="exclude" class="tab-content overflow-x-auto hidden">
+              <table class="table table-compact w-full">
+                <thead>
+                  <tr>
+                    <th>Action</th>
+                    <th>From</th>
+                    <th>Src Port</th>
+                    <th>To</th>
+                    <th>Dst port</th>
+                  </tr>
+                </thead>
+                <tbody id="exclude-rule-body"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-</div>
 
+  <input type="checkbox" id="rule-add-modal" class="modal-toggle" />
+  <label for="rule-add-modal" class="modal cursor-pointer">
+    <label class="modal-box relative" for="">
+      <h3 class="font-bold text-md">
+        <span class="text-base-300 pr-2">#</span>Create a new Rule!
+      </h3>
+      <form id="ruleForm">
+        <div class="flex-col space-y-2">
+          <div class="flex pt-2 align-base justify-center gap-2">
+            <label
+              for="policy"
+              class="block text-sm py-1 md:text-base font-medium text-gray-800"
+            >
+              Policy:
+            </label>
+            <select
+              id="policy"
+              name="policy"
+              autocomplete="policy"
+              class="mt-1 block w-28 py-1 px-3 border-b border-b-gray-300 bg-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            >
+              <option value="allow">Allow</option>
+              <option value="ignore">Ignore</option>
+              <option value="reject">Reject</option>
+            </select>
+          </div>
 
+          <div
+            class="whitespace-nowrap pt-2 flex items-center justify-center gap-2"
+          >
+            <label
+              for="direction"
+              class="block text-sm py-1 md:text-base font-medium text-gray-800"
+            >
+              Direction:
+            </label>
+            <select
+              id="direction"
+              name="direction"
+              class="mt-1 block w-28 py-1 px-3 border-b border-b-gray-300 bg-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            >
+              <option value="incoming">incoming</option>
+              <option value="outgoing">outgoing</option>
+            </select>
+          </div>
+          <div class="whitespace-nowrap pt-2 flex items-center justify-center">
+            <label
+              for="ipv"
+              class="block text-sm py-1 md:text-base font-medium text-gray-800"
+            >
+              IP version:
+            </label>
+            <select
+              id="ipv"
+              name="ipv"
+              class="mt-1 block w-28 py-1 px-3 border-b border-b-gray-300 bg-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            >
+              <option value="4">IPv4</option>
+              <option value="6">IPv6</option>
+            </select>
+          </div>
 
+          <div
+            class="whitespace-nowrap pt-2 flex items-center justify-center gap-2"
+          >
+            <label
+              for="sip"
+              class="block text-sm py-1 md:text-base font-medium text-gray-800"
+            >
+              Source:
+            </label>
+            <div class="flex gap-2">
+              <input
+                id="sip"
+                name="sip"
+                type="text"
+                placeholder="0.0.0.0"
+                class="input sm:text-sm w-28 w-full max-w-xs focus:outline-none rounded-none border-0 border-b border-b-gray-100 focus:border-b-primary"
+              />
+              <input
+                id="sport"
+                name="sport"
+                type="text"
+                placeholder="Any Port"
+                class="input sm:text-sm w-28 w-full max-w-xs focus:outline-none rounded-none border-0 border-b border-b-gray-100 focus:border-b-primary"
+              />
+            </div>
+          </div>
 
+          <div
+            class="whitespace-nowrap pt-2 flex items-center justify-center gap-2"
+          >
+            <label
+              for="dip"
+              class="block text-sm py-1 md:text-base font-medium text-gray-800"
+            >
+              Destination:
+            </label>
+            <div class="flex gap-2">
+              <input
+                id="dip"
+                name="dip"
+                type="text"
+                placeholder="0.0.0.0"
+                class="input sm:text-sm w-28 w-full max-w-xs focus:outline-none rounded-none border-0 border-b border-b-1 border-b-gray-100 focus:border-b-primary"
+              />
+              <input
+                id="dport"
+                name="dport"
+                type="text"
+                placeholder="Any Port"
+                class="input sm:text-sm w-8 w-full max-w-xs focus:outline-none rounded-none border-0 border-b border-b-gray-100 focus:border-b-primary"
+              />
+            </div>
+          </div>
 
-<script>
-    var tab=document.getElementsByClassName("tab-rule")
-    function handleRule(event){
-      button_toggled=event.target.id
-      for(i=0; i<tab.length; i++){
-        tab[i].classList.remove("tab-active")
+          <div
+            class="whitespace-nowrap pt-2 flex items-center justify-center gap-2"
+          >
+            <label
+              for="protocol"
+              class="block text-sm py-1 md:text-base font-medium text-gray-800"
+            >
+              Protocol:
+            </label>
+            <select
+              id="protocol"
+              name="protocol"
+              class="mt-1 block w-28 py-1 px-3 border-b border-b-gray-300 bg-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            >
+              <option value="any">Any</option>
+              <option value="udp">UDP</option>
+              <option value="tcp">TCP</option>
+            </select>
+          </div>
+
+          <div
+            class="whitespace-nowrap pt-2 flex items-center justify-center gap-2"
+          >
+            <label
+              for="iface"
+              class="block text-sm py-1 md:text-base font-medium text-gray-800"
+            >
+              Interface:
+            </label>
+            <select
+              id="iface"
+              name="iface"
+              class="mt-1 block w-28 py-1 px-3 border-b border-b-gray-300 bg-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            >
+              <option value="Wlp2s0">Wlp2s0</option>
+              <option value="enp3s0">enp3s0</option>
+              <option value="loop">loop</option>
+            </select>
+          </div>
+        </div>
+        <div
+          id="mbox"
+          class="hidden w-full border border-b-1 border-green-200 rounded-sm text-align-center flex items-center justify-center my-4 px-2 py-2 bg-green-200 bg-opacity-20"
+        ></div>
+        <div class="modal-action">
+          <p class="btn btn-md btn-accent btn-sm gap-2" onclick="submitForm()">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-4 w-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 4v16m8-8H4"
+              />
+            </svg>
+            <span
+              id="submit-button"
+              for="rule-add-form"
+              type="submit"
+              class="tex-sm font-semibold"
+              value="submit"
+              >add rule</span
+            >
+          </p>
+          <label for="rule-add-modal" class="btn btn-md btn-grey btn-sm gap-2">
+            <span class="tex-sm font-semibold">cancel</span>
+          </label>
+        </div>
+      </form>
+    </label>
+  </label>
+
+  <script>
+    var tab = document.getElementsByClassName("tab-rule");
+    function handleRule(event) {
+      button_toggled = event.target.id;
+      for (i = 0; i < tab.length; i++) {
+        tab[i].classList.remove("tab-active");
       }
-      event.target.classList.add("tab-active")
-      let content=document.getElementsByClassName("tab-content")
-      for(i=0; i<content.length; i++){
-        content[i].classList.remove("hidden")
-        content[i].classList.add("hidden")
+      event.target.classList.add("tab-active");
+      let content = document.getElementsByClassName("tab-content");
+      for (i = 0; i < content.length; i++) {
+        content[i].classList.remove("hidden");
+        content[i].classList.add("hidden");
       }
-      visibleContent=event.target.dataset.content;
-      content=document.getElementById(visibleContent)
+      visibleContent = event.target.dataset.content;
+      content = document.getElementById(visibleContent);
       content.classList.remove("hidden");
-    getRules(visibleContent).then((data)=>updateContent(data,visibleContent))
+      getRules(visibleContent).then((data) =>
+        updateContent(data, visibleContent)
+      );
     }
-
-    function updateContent(data,visibleContent){
-
-            let action=data[0].action
-            let ipv=data[0].ipv
-            let protocol=data[0].protocol
-            rules=data[0].rules
-            let header=['sip', 'sport', 'dip', 'dport']
-            parent=document.getElementById(`${visibleContent}-rule-body`)
-            document.getElementById(`${visibleContent}-rule-body`).innerHTML=""
-            for(i=0; i<rules.length; i++){
-            $(`#${visibleContent}-rule-body`).append(`
+    
+    function updateContent(data, visibleContent) {
+      let action = data[0].action;
+      let ipv = data[0].ipv;
+      let protocol = data[0].protocol;
+      rules = data[0].rules;
+      let header = ["sip", "sport", "dip", "dport"];
+      parent = document.getElementById(`${visibleContent}-rule-body`);
+      document.getElementById(`${visibleContent}-rule-body`).innerHTML = "";
+      for (i = 0; i < rules.length; i++) {
+        $(`#${visibleContent}-rule-body`).append(`
                      <tr class="text-gray-500">
                       <td class="border-t-0 px-4 align-middle text-sm font-normal whitespace-nowrap p-4 text-left">${action}</td>
-                                ${header.map(item=>(` <td class="border-t-0 px-4 align-middle text-sm font-normal whitespace-nowrap p-4 text-left">${rules[i][item]}</td>`))}
+                                ${header.map(
+                                  (item) =>
+                                    ` <td class="border-t-0 px-4 align-middle text-sm font-normal whitespace-nowrap p-4 text-left">${rules[i][item]}</td>`
+                                )}
                                </tr>
 
-                     `)
-                              }
-
+                     `);
+      }
     }
 
-    async function getRules(visibleContent){
-      data=await fetch(`/iptables/rules/${visibleContent}`)
-      .then(response =>{return response.json()})
-      .then(data =>data).catch((error)=>console.error(error))
-      return data
+    async function getRules(visibleContent) {
+      data = await fetch(`/iptables/rules/${visibleContent}`)
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => data)
+        .catch((error) => console.error(error));
+      return data;
     }
-    $(window).on("load",()=>{getRules("blocked").then(data=>updateContent(data,"blocked"));})
-</script>
+    $(window).on("load", () => {
+      getRules("blocked").then((data) => updateContent(data, "blocked"));
+
+      
 
 
 
 
+    });
 
+    const ruleForm = document.getElementById("ruleForm");
 
+    const submitForm = async () => {
+      let policy = getSelectValue("policy", "select");
+      let direction = getSelectValue("direction", "select");
+      let ipv = getSelectValue("ipv", "select");
+      let protocol = getSelectValue("protocol", "select");
+      let sip = getSelectValue("sip", "input");
+      let sport = getSelectValue("sport", "input");
+      let iface = getSelectValue("iface", "select");
+      let dip = getSelectValue("dip", "input");
+      let dport = getSelectValue("dport");
 
+      let rule = {
+        "policy": policy,
+        "direction": direction,
+        "ipv": ipv,
+        "protocol": protocol,
+        "iface": iface,
+        "sip": sip,
+        "sport": sport,
+        "dip": dip,
+        "dport": dport,
+      };
+      var ipformat =
+        /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
+      if (
+        (sip.match(ipformat) || sip == "") &&
+        (dip.match(ipformat) || dip == "") && (sip!="" || sport!="" || dport!="")
+      ) {
+        mbox = document.getElementById("mbox");
+        if (mbox.classList.contains("hidden")) mbox.classList.remove("hidden");
+        mbox.classList.add("bg-green-200", "border-green-200");
+        mbox.classList.remove("bg-red-200", "border-red-200");
+        mbox.innerHTML = "Submiting manual rule.....";
+        console.log(JSON.stringify(rule))
+        fetch("/iptables/addrule", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(rule),
+        })
+          .then((res) => {
+            if (res.status == 200) {
+                mbox.classList.add("bg-green-200", "border-green-200");
+                mbox.classList.remove("hidden","bg-red-200", "border-red-200");
+                mbox.innerHTML = "Rule submitted succesfully";
+                ruleForm.reset()
+            }
+              else if(res.status=201){
+                mbox.classList.remove("hidden","bg-green-200", "border-green-200");
+                mbox.classList.add("bg-red-200", "border-red-200");
+                mbox.innerHTML = "Rule duplicate try another";
+                ruleForm.reset()
+              } 
+            else {
+              mbox = document.getElementById("mbox");
+              mbox.classList.remove(
+                "hidden",
+                "bg-green-200",
+                "border-green-200"
+              );
+              mbox.classList.add("bg-red-200", "border-red-200");
+              mbox.innerHTML = "Error while handling request";
+            }
+          }).catch((error) => {
+            mbox = document.getElementById("mbox");
+            mbox.classList.remove("hidden", "bg-green-200", "border-green-200");
+            mbox.classList.add("bg-red-200", "border-red-200");
+            mbox.innerHTML = "Error while sending request try again";
+          });
 
-{% endblock %}
+        // ruleForm.addEventListener("submit", async function (e) {
+        //   e.preventDefault();
+        //   submitForm();
+        // });
+      } else {
+        mbox = document.getElementById("mbox");
+        mbox.classList.remove("hidden", "bg-green-200", "border-green-200");
+        mbox.classList.add("bg-red-200", "border-red-200");
+        mbox.innerHTML = "Either your source or destination address is invalid or your ip and port both are empty";
+      }
+    };
 
+    let getSelectValue = (id, type) => {
+      if (document.getElementById(id)) {
+        if (type == "select") {
+          var parent = document.getElementById(id);
+          var options = parent.options[parent.selectedIndex];
+          return options.value;
+        } else if ((type = "input"));
+        {
+          return document.getElementById(id).value;
+        }
+      }
+      return;
+    };
+  </script>
 
-
-
-
+  {% endblock %}
+</div>

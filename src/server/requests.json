@@ -1,12 +1,1 @@
-{   "lock":false,
-    "req":true,
-    "flush":true,
-    "unblock":[
-        {"sip": "192.168.18.10", "sport": "38104", "dip": "192.168.18.1", "dport": "80"},
-        {"sip": "19.16.18.10", "sport": "38104", "dip": "12.18.18.1", "dport": "80"}
-    ],
-    "exclude":[
-        {"sip": "192.168.18.10", "sport": "38104", "dip": "192.168.18.1", "dport": "80"},
-        {"sip": "19.16.18.10", "sport": "38104", "dip": "12.18.18.1", "dport": "80"}
-    ]
-}
+{"lock": false, "req": true, "flush": false, "unblock": [], "exclude": [], "manual": []}

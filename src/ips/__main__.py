@@ -11,7 +11,6 @@ import time
 
 
 LOG_TEMPLATE = "%(levelname)s %(asctime)s - %(message)s"
-
 def logger(logpath,level):
     logging.basicConfig(
                         format = LOG_TEMPLATE,
@@ -46,6 +45,7 @@ def check_rule(sip,sport,dip,dport):
         return "error"
 
     exclude_rule=config["exclude"]
+    
     for exclude in exclude_rule:
         if exclude['sip']==sip or str(exclude['dport']) ==dport:
             return "in_exclude"
@@ -113,6 +113,7 @@ def store_in_rule(sip,sport,dip,dport,category):
 
 def policy(sip,sport,dip,dport,dos,ddos,portscan,proto):
     is_in_exclude=check_rule(sip, sport, dip, dport)
+    print(is_in_exclude)
     try:
         with open('ips_config.json') as f:
             config = json.load(f) 
@@ -128,13 +129,13 @@ def policy(sip,sport,dip,dport,dos,ddos,portscan,proto):
                     if dos==0 or ddos==0 or portscan==0:
                         result=executor_new.block(sip, sport, dip, dport, proto, iface, block_port_ip_network)
                         if(result!=1):
+                            
                             store_in_rule(sip, sport, dip, dport, "blocked")
                             if(dos==0):attack="dos"
                             if (ddos==0):attack="ddos"
                             if(portscan==0):attack="portscan"
                             warning.warning(f"{sip} ip adress involved in {attack} is blocked")
                     elif not is_in_exclude == "in_suspicious":
-                        print("i should be in suspicious")
                         if dos==1 and ddos==1 and portscan ==1 :
                             # result=executor_new.block(sip, sport, dip, dport, proto, iface, block_port_ip_network)
                             # if(result!=1):
@@ -165,6 +166,8 @@ def handle_server_request():
         return ""
 
 
+
+
 count = 1
 last_date = datetime.now().strftime("%Y-%m-%d")
 while True:
@@ -188,13 +191,16 @@ while True:
                 index = int(re.search(r'\d+', s).group())
                 if(index>=largest_index):
                     largest_index=index
+    
+        
         for i in range(count,largest_index+1):
             csv_to_analyze = f'{csv_directory}{i}.csv'
-            count=i
+            # csv_to_analyze = f'{os.getcwd()}/Flow.csv'
             if os.path.exists(csv_to_analyze) and os.stat(csv_to_analyze).st_size != 0:
                 try:
                     if config['mode'] == 'IPS':
-                        info.info("Working In IPS Mode")
+                        info.info(f"Working In {config['mode']} Mode")
+                        
                         df = pd.read_csv(csv_to_analyze)
                         if not df.loc[df['B/A']==0].empty:
                             df = df.loc[df['B/A']==0]
@@ -216,11 +222,51 @@ while True:
                     else:
                         click.clear()
                         warning.warning("IPS mode off")
+                        df = pd.read_csv(csv_to_analyze)
+                        
+                        if not df.loc[df['B/A']==0].empty:
+                            df = df.loc[df['B/A']==0]
+                            # df = df.loc[df['B/A']==0]
+                            for index,row in df.iterrows():
+                                dos=row['DoS']
+                                ddos=row['DDoS']
+                                portscan=row['PortScan']
+                                sip=row['Src IP']
+                                sport=row['Src Port']
+                                dport=row['Dst Port']
+                                
+                                if dos==0 or ddos==0 or portscan==0:
+                                    if(dos==0):attack="dos"
+                                    if (ddos==0):attack="ddos"
+                                    if(portscan==0):attack="portscan"
+
+                                    warning.warning(f" detected {sip} ip adress involved in {attack} attack")
+                                
+                                if dos==1 and ddos==1 and portscan ==1 :
+                                    # result=executor_new.block(sip, sport, dip, dport, proto, iface, block_port_ip_network)
+                                    # if(result!=1):
+                                    warning.warning(f"suspicious ip adreess {sip} detected")
+                                time.sleep(1)
+                            
+
+
+
+
+
+                                # policy(row["Src IP"], row["Src Port"], row['Dst IP'], row['Dst Port'], row['DoS'], row['DDoS'], row['PortScan'])
+                                #check if that row exists in exclude if exists then skip
+                                #else use policy
+                                #read block csv get row given by column['last_read']=1
+                                #read from record following that index and call executor block
+                                #if not records then append the blocked record from above to he blocked csv and add 0 to former and add 1 to itself 
                     
                 except KeyboardInterrupt:
                     warning.warning("Shutting Down IPS")
                     warning.shutdown()
                     sys.exit()
+        else:
+            if config['mode'] == 'IPS':
+                        info.info("Working In IPS Mode")
     except Exception as e:
         info.info("Reloading IPS")
 

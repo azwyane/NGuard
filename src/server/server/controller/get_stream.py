@@ -4,6 +4,8 @@ from datetime import datetime
 import pandas as pd
 import json
 import sys
+import re
+import pathlib
 
 
 CWD =os.getcwd()
@@ -14,27 +16,43 @@ try:
         BRAIN_LOG_PATH=f"{CWD.replace('/server','')}/{config['BRAIN_LOG']}"
     with open(CWD.replace('/server','') + '/server_config.json') as f:
         config=json.load(f)
-        FLOW_PATH=config['flow_path']
+        FLOW_PATH=f"{CWD.replace('/server','')}/{config['flow_path']}"
     with open(CWD.replace('/server','') + '/ips_config.json') as f:
         config=json.load(f)
         IPS_LOG_PATH=f"{CWD.replace('/server','')}/{config['logpath']}"
 except Exception as e:
     print(e)
-    sys.exit()
 
 
-def get_packet_stream(rows):
-
+def get_packet_stream():
+    counter=1
+    with open(os.getcwd().replace('/server','') + '/server_config.json') as f:
+        config=json.load(f)
+        FLOW_PATH=f"{os.getcwd().replace('/server','')}/{config['flow_path']}"
     dt = datetime.now()
-    filepath = f"{FILE_PATH}{dt.strftime('%Y-%m-%d')}/{dt.strftime('%Y-%m-%d')}_Flow1.csv"
-    
-    num_lines = sum(1 for line in open(filepath))
-    
-    num_lines = sum(1 for line in open(filepath)) - rows
-    csv_file = pd.DataFrame(pd.read_csv(filepath, sep=",", header=0, index_col=False, skiprows=range(1, num_lines)))
-    packets = csv_file.to_json(orient="records", date_format="epoch", double_precision=10, force_ascii=True,
-                     date_unit="ms", default_handler=None)
-    packets=[]
+    file_initials=dt.strftime('%Y-%m-%d')
+    dir_list = os.listdir(FLOW_PATH+file_initials)
+    for dir in dir_list:
+        if(file_initials+"_Flow" in dir):
+            file=dir.split("_")[1]
+            count = int(re.search(r'\d+', file).group())
+            if(count>=counter):
+                counter=count
+    try:
+        while(counter!=0):
+            dt = datetime.now()
+            filepath = f"{FLOW_PATH}{dt.strftime('%Y-%m-%d')}/{dt.strftime('%Y-%m-%d')}_Flow{counter}.csv"
+            
+            if pathlib.Path(filepath).is_file() and os.stat(filepath).st_size != 0:
+                csv_file = pd.DataFrame(pd.read_csv(filepath, sep=",", header=0, index_col=False))
+                packets = csv_file.to_json(orient="records", date_format="epoch", double_precision=10, force_ascii=True,
+                                date_unit="ms", default_handler=None)
+                
+                break;
+            else:
+                counter=counter-1
+    except:
+            packets=[]
     return packets
 
 
@@ -45,14 +63,13 @@ def get_packet_header():
     return header
 
 
-def get_packet_count(rows=1):
+def get_packet_count(rows=15):
     dt = datetime.now()
     time="23:42:34"
     packet=1
-    count_directory="sniff"
-    packet_path = f"{FLOW_PATH}{dt.strftime('%Y-%m-%d')}/{dt.strftime('%Y-%m-%d')}_count_Flow.csv"
-    num_lines = sum(1 for line in open(filepath)) - rows
-    csv_file = pd.DataFrame(pd.read_csv(filepath, sep=",", header=0, index_col=False,skiprows=range(1,num_lines)))
+    count_path = f"{FLOW_PATH}{dt.strftime('%Y-%m-%d')}/{dt.strftime('%Y-%m-%d')}_count_Flow.csv"
+    num_lines = sum(1 for line in open(count_path)) - rows
+    csv_file = pd.DataFrame(pd.read_csv(count_path, sep=",", header=0, index_col=False,skiprows=range(1,num_lines)))
     packets = csv_file.to_json(orient="records", date_format="epoch", double_precision=10, force_ascii=True,
                                date_unit="ms", default_handler=None)
     packet = csv_file.to_dict('records')
