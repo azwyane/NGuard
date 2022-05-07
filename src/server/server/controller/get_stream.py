@@ -29,7 +29,7 @@ except Exception as e:
 def get_packet_stream():
     dt = datetime.now()
     counter=1
-    dir_list = os.listdir(FILE_PATH)
+    dir_list = os.listdir(f"{FILE_PATH}{dt.strftime('%Y-%m-%d')}")
     file_initials=dt.strftime('%Y-%m-%d')
     packets=[]
     try:
@@ -40,7 +40,7 @@ def get_packet_stream():
                 if(count>=counter):
                     counter=count
         # filepath = f"{CWD.replace('/server','')}/Flow.csv"
-        filepath = f"{FILE_PATH}{dt.strftime('%Y-%m-%d')}_Flow{counter}.csv"
+        filepath = f"{FILE_PATH}{dt.strftime('%Y-%m-%d')}/{dt.strftime('%Y-%m-%d')}_Flow{counter}.csv"
         if pathlib.Path(filepath).is_file() and os.stat(filepath).st_size != 0:
             df = pd.read_csv(filepath)
             packets=df.to_json(orient="records", date_format="epoch", double_precision=10, force_ascii=True,date_unit="ms", default_handler=None)
