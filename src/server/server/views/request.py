@@ -4,9 +4,6 @@ from utils import manual_ips
 import json
 from server.views.utils import get_rules, get_action,handle_manual_rule,handle_update_request
 
-
-
-
 @app.route('/iptables/rules/blocked')
 def blocked_rules():
     if request.method == 'GET':

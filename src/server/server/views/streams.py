@@ -17,14 +17,12 @@ def packets():
         packet_count=-1
         while True:
             packet = get_packet_stream()
-            if(packet_count==-1 or packet_count==14):
-                count=get_packet_count()
-                packet_count=0
+            count=get_packet_count()
             json_data = json.dumps(
-                {'packets': packet, 'counts': count[packet_count],'time':time.time() })
+                {'packets': packet, 'counts':{ 'anomalous':count['anomalous'],'benign':count['benign']},'time':count['time'] })
             yield f"data:{json_data}\n\n"
             packet_count+=1
-            time.sleep(1.5)
+            time.sleep(1)
     return Response(get_packet(),mimetype='text/event-stream')
 
 

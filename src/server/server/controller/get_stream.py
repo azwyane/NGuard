@@ -6,6 +6,8 @@ import json
 import sys
 import re
 import pathlib
+import time
+
 
 
 CWD =os.getcwd()
@@ -25,32 +27,22 @@ except Exception as e:
 
 
 def get_packet_stream():
-    counter=1
-    with open(os.getcwd().replace('/server','') + '/server_config.json') as f:
-        config=json.load(f)
-        FLOW_PATH=f"{os.getcwd().replace('/server','')}/{config['flow_path']}"
     dt = datetime.now()
+    counter=1
+    dir_list = os.listdir(FILE_PATH)
     file_initials=dt.strftime('%Y-%m-%d')
-    dir_list = os.listdir(FLOW_PATH+file_initials)
-    for dir in dir_list:
-        if(file_initials+"_Flow" in dir):
-            file=dir.split("_")[1]
-            count = int(re.search(r'\d+', file).group())
-            if(count>=counter):
-                counter=count
     try:
-        while(counter!=0):
-            dt = datetime.now()
-            filepath = f"{FLOW_PATH}{dt.strftime('%Y-%m-%d')}/{dt.strftime('%Y-%m-%d')}_Flow{counter}.csv"
-            
-            if pathlib.Path(filepath).is_file() and os.stat(filepath).st_size != 0:
-                csv_file = pd.DataFrame(pd.read_csv(filepath, sep=",", header=0, index_col=False))
-                packets = csv_file.to_json(orient="records", date_format="epoch", double_precision=10, force_ascii=True,
-                                date_unit="ms", default_handler=None)
-                
-                break;
-            else:
-                counter=counter-1
+        for dir in dir_list:
+            if(file_initials+"_Flow" in dir):
+                file=dir.split("_")[1]
+                count = int(re.search(r'\d+', file).group())
+                if(count>=counter):
+                    counter=count
+        filepath = f"{CWD.replace('/server','')}/Flow.csv"
+        # filepath = f"{FILE_PATH}{dt.strftime('%Y-%m-%d')}_Flow{counter}.csv"
+        if pathlib.Path(filepath).is_file() and os.stat(filepath).st_size != 0:
+            df = pd.read_csv(filepath)
+            packets=df.to_json(orient="records", date_format="epoch", double_precision=10, force_ascii=True,date_unit="ms", default_handler=None)
     except:
             packets=[]
     return packets
@@ -63,17 +55,124 @@ def get_packet_header():
     return header
 
 
+
+
+
+
 def get_packet_count(rows=15):
     dt = datetime.now()
-    time="23:42:34"
-    packet=1
-    count_path = f"{FLOW_PATH}{dt.strftime('%Y-%m-%d')}/{dt.strftime('%Y-%m-%d')}_count_Flow.csv"
-    num_lines = sum(1 for line in open(count_path)) - rows
-    csv_file = pd.DataFrame(pd.read_csv(count_path, sep=",", header=0, index_col=False,skiprows=range(1,num_lines)))
-    packets = csv_file.to_json(orient="records", date_format="epoch", double_precision=10, force_ascii=True,
-                               date_unit="ms", default_handler=None)
-    packet = csv_file.to_dict('records')
-    return packet
+    counter=1
+    try:
+        dir_list = os.listdir(FILE_PATH)
+        file_initials=dt.strftime('%Y-%m-%d')
+        for dir in dir_list:
+            if(file_initials+"_Flow" in dir):
+                file=dir.split("_")[1]
+                count = int(re.search(r'\d+', file).group())
+                if(count>=counter):
+                    counter=count
+        # filepath = f"{CWD.replace('/server','')}/Flow.csv"
+        
+        filepath = f"{FILE_PATH}{dt.strftime('%Y-%m-%d')}_Flow{counter}.csv"
+        if pathlib.Path(filepath).is_file() and os.stat(filepath).st_size != 0:
+            df = pd.read_csv(filepath)
+            current=dict(tuple(df.groupby('Timestamp')))
+            largetime=0
+            anomalous=0
+            benign=0
+            current_time=int(time.time())
+            for key in current:
+                timestamp=int(time.mktime(datetime.strptime(key,"%d/%m/%Y %H:%M:%S %p").timetuple()))
+                if(largetime<=timestamp):
+                    benign=0
+                    anomalous=0
+                    largetime=timestamp
+                    for s in current[key]['B/A']:
+                        if s==1:
+                            benign+=1
+                        else:
+                            anomalous+=1
+            if(current_time<=largetime+5):
+                return{
+                    'time':current_time,
+                    'anomalous':anomalous,
+                    'benign':benign
+                }
+            else:
+                return{
+                    'time':current_time,
+                    'anomalous':0,
+                    'benign':0
+                }
+        else:
+                return{
+                    'time':int(time.time()),
+                    'anomalous':0,
+                    'benign':0
+                }
+    except:
+        return{
+                'time':int(time.time()),
+                'anomalous':0,
+                'benign':0
+            }
+    # for item in current:
+    #     if item['B/A']==1:benign=benign+1
+
+    # time.mktime(datetime.datetime.strptime("05/05/2022 02:45:29 PM","%d/%m/%Y %H:%M:%S  %p").timetuple())
+                        
+    # if not df.loc[df['B/A']==0].empty:
+    #     df = df.loc[df['B/A']==0]
+    #     # df = df.loc[df['B/A']==0]
+    #     for index,row in df.iterrows():
+    #         dos=row['DoS']
+    #         ddos=row['DDoS']
+    #         portscan=row['PortScan']
+    #         sip=row['Src IP']
+    #         sport=row['Src Port']
+    #         dport=row['Dst Port']
+            
+    #         if dos==0 or ddos==0 or portscan==0:
+    #             if(dos==0):attack="dos"
+    #             if (ddos==0):attack="ddos"
+    #             if(portscan==0):attack="portscan"
+
+    #             print("attack")
+            
+    #         if dos==1 and ddos==1 and portscan ==1 :
+    #             # result=executor_new.block(sip, sport, dip, dport, proto, iface, block_port_ip_network)
+    #             # if(result!=1):
+    #             print("suspicious")
+    # if not df.loc[df['B/A']==1].empty:
+    #     df = df.loc[df['B/A']==1]
+    #     # df = df.loc[df['B/A']==0]
+    #     for index,row in df.iterrows():
+    #         print(row)
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    # csv_file = pd.DataFrame(pd.read_csv(count_path, sep=",", header=0, index_col=False,skiprows=range(1,num_lines)))
+    # packets = csv_file.to_json(orient="records", date_format="epoch", double_precision=10, force_ascii=True,
+    #                            date_unit="ms", default_handler=None)
+    # packet = csv_file.to_dict('records')
+    return {'count':4}
 
 
 def tail(f, lines=1, _buffer=4098):
@@ -104,6 +203,7 @@ def tail(f, lines=1, _buffer=4098):
         # next X bytes
         block_counter -= 1
     return lines_found[-lines:]
+
 
 def get_logs_stream(count=10):
     dt = datetime.now()
