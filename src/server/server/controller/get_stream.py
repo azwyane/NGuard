@@ -74,7 +74,7 @@ def get_packet_count(rows=15):
                     counter=count
         # filepath = f"{CWD.replace('/server','')}/Flow.csv"
         
-        filepath = f"{FILE_PATH}{dt.strftime('%Y-%m-%d')}/{dt.strftime('%Y-%m-%d')}_Flow{counter}.csv"
+        filepath = f"{FILE_PATH}{dt.strftime('%Y-%m-%d')}_Flow{counter}.csv"
         if pathlib.Path(filepath).is_file() and os.stat(filepath).st_size != 0:
             df = pd.read_csv(filepath)
             current=dict(tuple(df.groupby('Timestamp')))
