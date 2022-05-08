@@ -23,6 +23,7 @@ def packets():
             yield f"data:{json_data}\n\n"
             packet_count+=1
             time.sleep(1)
+            
     return Response(get_packet(),mimetype='text/event-stream')
 
 

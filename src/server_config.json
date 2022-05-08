@@ -1,4 +1,1 @@
-{   "flow_path":"sniff/",
-    "flow_db_path":"db/Flow.db",
-    "request_path":"server/requests.json"
-}
+{"flow_path": "sniff/", "flow_db_path": "db/Flow.db", "request_path": "server/requests.json", "last_read": "2022-05-08_Flow98.csv"}

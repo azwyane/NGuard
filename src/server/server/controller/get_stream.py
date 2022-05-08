@@ -18,7 +18,8 @@ try:
         BRAIN_LOG_PATH=f"{CWD.replace('/server','')}/{config['BRAIN_LOG']}"
     with open(CWD.replace('/server','') + '/server_config.json') as f:
         config=json.load(f)
-        FLOW_PATH=f"{CWD.replace('/server','')}/{config['flow_path']}"
+        last_read=config["last_read"]
+
     with open(CWD.replace('/server','') + '/ips_config.json') as f:
         config=json.load(f)
         IPS_LOG_PATH=f"{CWD.replace('/server','')}/{config['logpath']}"
@@ -41,11 +42,14 @@ def get_packet_stream():
                     counter=count
         # filepath = f"{CWD.replace('/server','')}/Flow.csv"
         filepath = f"{FILE_PATH}{dt.strftime('%Y-%m-%d')}/{dt.strftime('%Y-%m-%d')}_Flow{counter}.csv"
+    
         if pathlib.Path(filepath).is_file() and os.stat(filepath).st_size != 0:
             df = pd.read_csv(filepath)
             packets=df.to_json(orient="records", date_format="epoch", double_precision=10, force_ascii=True,date_unit="ms", default_handler=None)
-    except:
-            packets=[]
+    except Exception as e:
+        print(e)
+        packets=[]
+   
     return packets
 
 
@@ -74,42 +78,31 @@ def get_packet_count(rows=15):
                     counter=count
         # filepath = f"{CWD.replace('/server','')}/Flow.csv"
         
-        filepath = f"{FILE_PATH}{dt.strftime('%Y-%m-%d')}_Flow{counter}.csv"
-        if pathlib.Path(filepath).is_file() and os.stat(filepath).st_size != 0:
+        filepath = f"{FILE_PATH}{dt.strftime('%Y-%m-%d')}/{dt.strftime('%Y-%m-%d')}_Flow{counter}.csv"
+        filename=f"{dt.strftime('%Y-%m-%d')}_Flow{counter}.csv"
+        if pathlib.Path(filepath).is_file() and  not filename == last_read:
+        
             df = pd.read_csv(filepath)
-            current=dict(tuple(df.groupby('Timestamp')))
-            largetime=0
-            anomalous=0
-            benign=0
-            current_time=int(time.time())
-            for key in current:
-                timestamp=int(time.mktime(datetime.strptime(key,"%d/%m/%Y %H:%M:%S %p").timetuple()))
-                if(largetime<=timestamp):
-                    benign=0
-                    anomalous=0
-                    largetime=timestamp
-                    for s in current[key]['B/A']:
-                        if s==1:
-                            benign+=1
-                        else:
-                            anomalous+=1
-            if(current_time<=largetime+5):
-                return{
-                    'time':current_time,
+            anomalous=len(df.loc[df['B/A']==0])
+            
+            benign=len(df.loc[df['B/A']==1])
+           
+            with open(CWD.replace('/server','') + '/server_config.json') as f:
+                config=json.load(f)
+            with open(f"{CWD.replace('/server','')}/server_config.json",'w') as f:
+                config["last_read"]=filename
+           
+                json.dump(config,f)
+            return {
+                    'time':int(time.time()),
                     'anomalous':anomalous,
                     'benign':benign
                 }
-            else:
-                return{
-                    'time':current_time,
-                    'anomalous':0,
-                    'benign':0
-                }
         else:
-                return{
+            return {
                     'time':int(time.time()),
-                    'anomalous':0,
-                    'benign':0
+                    'anomalous':anomalous,
+                    'benign':benign
                 }
     except:
         return{
