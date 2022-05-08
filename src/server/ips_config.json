@@ -1,4 +1,4 @@
-{
+{"mode": "IDS",
     "network":{
       "NETWORK_MODE": "HOST", 
       "HOST" : "",
@@ -12,5 +12,7 @@
     "WEBATTACK": "DROP"
     },
     "interface": "wlan0",
-    "exclude_ip": []
+    "exclude_ip": [],
+    "logpath":"ips_logs",
+    "ids_log":"ids_logs"
 }

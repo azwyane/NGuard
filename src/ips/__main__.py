@@ -22,6 +22,7 @@ def logger(logpath,level):
                         )
     return logging.getLogger()
 
+
 try:
     with open('ips_config.json') as f:
         config = json.load(f)
@@ -167,7 +168,7 @@ def handle_server_request():
 
 
 
-
+last_read=0
 count = 1
 last_date = datetime.now().strftime("%Y-%m-%d")
 while True:
@@ -181,77 +182,70 @@ while True:
             warning.warning("Shutting Down")
             sys.exit()
         file_initials=str(f'{datetime.now().strftime("%Y-%m-%d")}_Flow')
-        dir_list = os.listdir(f'{os.getcwd()}/{brain_config.get("OUTPUT_DIR")}')
-        csv_directory=f'{os.getcwd()}/{brain_config.get("OUTPUT_DIR")}/{datetime.now().strftime("%Y-%m-%d")}_Flow'
+        dir_list = os.listdir(f'{os.getcwd()}/{brain_config["OUTPUT_DIR"]}/{datetime.now().strftime("%Y-%m-%d")}')
+        csv_directory=f'{os.getcwd()}/{brain_config["OUTPUT_DIR"]}/{datetime.now().strftime("%Y-%m-%d")}/{datetime.now().strftime("%Y-%m-%d")}_Flow'
         largest_index=1
-
         for dir in dir_list:
             if(file_initials in dir):
                 s=dir.split("_")[1]
                 index = int(re.search(r'\d+', s).group())
                 if(index>=largest_index):
                     largest_index=index
-    
-        
-        for i in range(count,largest_index+1):
-            csv_to_analyze = f'{csv_directory}{i}.csv'
+        if count<=largest_index and last_read!=count:
+            csv_to_analyze = f'{csv_directory}{count}.csv'
             # csv_to_analyze = f'{os.getcwd()}/Flow.csv'
             if os.path.exists(csv_to_analyze) and os.stat(csv_to_analyze).st_size != 0:
                 try:
+                    last_read=count
                     if config['mode'] == 'IPS':
                         info.info(f"Working In {config['mode']} Mode")
-                        
                         df = pd.read_csv(csv_to_analyze)
                         if not df.loc[df['B/A']==0].empty:
                             df = df.loc[df['B/A']==0]
                             # df = df.loc[df['B/A']==0]
                             for index,row in df.iterrows():
                                 policy(row["Src IP"], int(row["Src Port"]), row['Dst IP'], int(row['Dst Port']), int(row['DoS']), int(row['DDoS']), int(row['PortScan']),proto=row["Protocol"])
-                                # policy(row["Src IP"], row["Src Port"], row['Dst IP'], row['Dst Port'], row['DoS'], row['DDoS'], row['PortScan'])
-                                #check if that row exists in exclude if exists then skip
-                                #else use policy
-                                #read block csv get row given by column['last_read']=1
-                                #read from record following that index and call executor block
-                                #if not records then append the blocked record from above to he blocked csv and add 0 to former and add 1 to itself 
-                        if last_date == datetime.now().strftime("%Y-%m-%d"):
-                            info.info(f'Waiting for new dump after {datetime.now().strftime("%Y-%m-%d")}_Flow{count}.csv')
-                        else:
-                            count = 1
-                            last_date = datetime.now().strftime("%Y-%m-%d")
-                            info.info('========New Day LOG=======')
+                                ## policy(row["Src IP"], row["Src Port"], row['Dst IP'], row['Dst Port'], row['DoS'], row['DDoS'], row['PortScan'])
+                                ##check if that row exists in exclude if exists then skip
+                                ##else use policy
+                                ##read block csv get row given by column['last_read']=1
+                                ##read from record following that index and call executor block
+                                ##if not records then append the blocked record from above to he blocked csv and add 0 to former and add 1 to itself
+                        #if last_date == datetime.now().strftime("%Y-%m-%d"):
+                            #info.info(f'Waiting for new dump after {datetime.now().strftime("%Y-%m-%d")}_Flow{count}.csv')
+                        #else:
+                            ##count = 1
+                            ##last_date = datetime.now().strftime("%Y-%m-%d")
+                            ##info.info('========New Day LOG=======')
+                            ##count=count+1
+                        pass
                     else:
                         click.clear()
                         warning.warning("IPS mode off")
                         df = pd.read_csv(csv_to_analyze)
-                        
                         if not df.loc[df['B/A']==0].empty:
                             df = df.loc[df['B/A']==0]
                             # df = df.loc[df['B/A']==0]
                             for index,row in df.iterrows():
+                                time.sleep(1)
                                 dos=row['DoS']
                                 ddos=row['DDoS']
                                 portscan=row['PortScan']
                                 sip=row['Src IP']
                                 sport=row['Src Port']
                                 dport=row['Dst Port']
-                                
                                 if dos==0 or ddos==0 or portscan==0:
                                     if(dos==0):attack="dos"
                                     if (ddos==0):attack="ddos"
                                     if(portscan==0):attack="portscan"
 
                                     warning.warning(f" detected {sip} ip adress involved in {attack} attack")
-                                
+
                                 if dos==1 and ddos==1 and portscan ==1 :
-                                    # result=executor_new.block(sip, sport, dip, dport, proto, iface, block_port_ip_network)
-                                    # if(result!=1):
+                                    ## result=executor_new.block(sip, sport, dip, dport, proto, iface, block_port_ip_network)
+                                    #if(result!=1):
                                     warning.warning(f"suspicious ip adreess {sip} detected")
                                 time.sleep(1)
-                            
-
-
-
-
 
                                 # policy(row["Src IP"], row["Src Port"], row['Dst IP'], row['Dst Port'], row['DoS'], row['DDoS'], row['PortScan'])
                                 #check if that row exists in exclude if exists then skip
@@ -264,10 +258,20 @@ while True:
                     warning.warning("Shutting Down IPS")
                     warning.shutdown()
                     sys.exit()
+                if last_date == datetime.now().strftime("%Y-%m-%d"):
+                    info.info(f'Waiting for new dump after {datetime.now().strftime("%Y-%m-%d")}_Flow{count}.csv')
+                    count=count+1
+                else:
+                    count = 1
+                    last_date = datetime.now().strftime("%Y-%m-%d")
+                    info.info('========New Day LOG=======')
+            else:
+                count=count+1
         else:
             if config['mode'] == 'IPS':
                         info.info("Working In IPS Mode")
     except Exception as e:
+        print(e)
         info.info("Reloading IPS")
 
 
