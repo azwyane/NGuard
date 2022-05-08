@@ -107,7 +107,7 @@
 
 function alrtMessage(message,type){
   return (` <div id="toast-default"
-		class="flex items-center w-full max-w-xs p-4 text-gray-500 bg-white rounded-lg shadow "
+		class=" toast-row flex items-center w-full max-w-xs p-4 text-gray-500 bg-white rounded-lg shadow "
 		role="alert">
 		<div
 			class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 ${(type=="success")?"text-green-500 bg-green-100":((type=="info")?"text-blue-500 bg-blue-100":"text-red-500 bg-red-100")} rounded-lg ">
@@ -126,15 +126,74 @@ function alrtMessage(message,type){
 }
 
 
-function clearTost(){
-    toast_place_holder=document.getElementById("toast-place")
-    for(i=0;i<toast_place_holder.children.length; i++){
-      toast_place_holder.children[i].remove()
+
+
+
+notify=async (message="hello") => {
+    // create and show the notification
+    const showNotification = () => {
+        // create a new notification
+        const notification = new Notification('NGuard alert', {
+            body: message
+        });
+
+        // close the notification after 10 seconds
+        setTimeout(() => {
+            notification.close();
+        }, 10 * 1000);
+
     }
-  }
+
+    // show an error message
+    const showError = () => {
+        console.log("hello")
+    }
+
+    // check notification permission
+    let granted = false;
+
+    if (Notification.permission === 'granted') {
+        granted = true;
+    } else if (Notification.permission !== 'denied') {
+        let permission = await Notification.requestPermission();
+        granted = permission === 'granted' ? true : false;
+    }
+
+    // show notification or error
+    granted ? showNotification() : showError();
+
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 function closeAlert(event){
-   event.target.parentNode.parentNode.remove()
+   if(event.target.parentNode.classList.contains('toast-row'))
+   {
+      event.target.parentNode.remove()
+   }
+   else if(event.target.parentNode.parentNode.classList.contains('toast-row'))
+   {
+      event.target.parentNode.parentNode.remove()
+
+   }
  }
 
            var packets=[]
@@ -198,8 +257,8 @@ function closeAlert(event){
 
 
                   if(isAttack['attack']==true){
-                     clearTost()
-                     $('#toast-place').append(alrtMessage(`Detected attack:  ${isAttack['type']}`,"error"))
+                     notify(`attack detected:${isAttack['type']}`)
+                     
                   }
 
                   
@@ -249,7 +308,7 @@ function closeAlert(event){
             function checkAttack(flow){
                if(flow["B/A"]==1){
                return {'attack':false}}
-               else{
+               else if (flow["B/A"]==0){
                   let attack="";
                   attack=(flow["DoS"]==0)?"DoS":attack
                   attack=(flow["DDoS"]==0)?"DDoS":attack
