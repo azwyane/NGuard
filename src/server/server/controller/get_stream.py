@@ -101,8 +101,8 @@ def get_packet_count(rows=15):
         else:
             return {
                     'time':int(time.time()),
-                    'anomalous':anomalous,
-                    'benign':benign
+                    'anomalous':0,
+                    'benign':0
                 }
     except:
         return{
